@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Browse, search and watch Kingdom Witness Global Ministries videos from YouTube.">
+  <meta name="theme-color" content="#0d0101">
+  <title>Messages — Kingdom Witness Global Ministries</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .videos-shell{max-width:1180px;margin:0 auto;padding:116px 20px 70px}
+    .video-hero{text-align:center;margin-bottom:2rem}
+    .video-hero h1{font-size:clamp(34px,6vw,58px);margin-bottom:10px}
+    .video-hero p{max-width:760px;margin:0 auto;color:#a7a7ad;line-height:1.7}
+    .video-toolbar{display:grid;grid-template-columns:1fr auto;gap:12px;margin:24px auto 0;max-width:780px}
+    .video-search{position:relative}
+    .video-search i{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--accent-red)}
+    .video-search input{width:100%;min-height:50px;padding:12px 15px 12px 42px;border-radius:12px;border:1px solid rgba(255,51,51,.28);background:rgba(18,2,2,.72);color:#fff;font-family:'Outfit',sans-serif}
+    .video-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+    .library-tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:26px 0 20px}
+    .library-tab{border:1px solid rgba(255,51,51,.24);background:rgba(255,255,255,.03);color:#bbb;padding:9px 14px;border-radius:999px;cursor:pointer}
+    .library-tab.is-active{color:#fff;background:rgba(255,51,51,.13);border-color:rgba(255,51,51,.48)}
+    .video-status{text-align:center;color:#9ca3af;margin:18px 0;min-height:24px}
+    .video-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.25rem}
+    .video-card{overflow:hidden;padding:0!important;display:flex;flex-direction:column}
+    .video-thumb{position:relative;aspect-ratio:16/9;background:#120202;overflow:hidden}
+    .video-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+    .video-thumb::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 52%,rgba(0,0,0,.65))}
+    .video-play-btn{position:absolute;z-index:2;left:50%;top:50%;transform:translate(-50%,-50%);width:58px;height:58px;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:rgba(255,51,51,.82);color:#fff;font-size:20px;cursor:pointer}
+    .video-date{position:absolute;z-index:2;left:12px;bottom:10px;font-size:11px;color:#fff;background:rgba(0,0,0,.55);padding:5px 8px;border-radius:999px}
+    .video-card-copy{padding:17px;display:flex;flex-direction:column;flex:1}
+    .video-card-copy h2{font-size:17px;line-height:1.35;margin-bottom:8px}
+    .video-card-copy p{color:#969aa1;line-height:1.55;font-size:13px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .video-card-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:auto;padding-top:15px}
+    .video-mini-btn{min-height:42px;border-radius:10px;border:1px solid rgba(255,51,51,.22);background:rgba(255,255,255,.035);color:#fff;cursor:pointer;font-family:'Outfit',sans-serif}
+    .video-mini-btn:hover{background:rgba(255,51,51,.12)}
+    .video-mini-btn.saved{border-color:rgba(255,51,51,.55);background:rgba(255,51,51,.13)}
+    .load-more-wrap{text-align:center;margin-top:26px}
+    .player-modal{position:fixed;inset:0;z-index:30000;background:rgba(0,0,0,.86);display:grid;place-items:center;padding:18px}
+    .player-modal[hidden]{display:none}
+    .player-card{width:min(100%,1000px);background:#100101;border:1px solid rgba(255,51,51,.25);border-radius:16px;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.7)}
+    .player-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;gap:12px}
+    .player-head h2{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .player-close{width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#fff;cursor:pointer}
+    .player-frame{aspect-ratio:16/9;background:#000}
+    .player-frame iframe{width:100%;height:100%;border:0}
+    .offline-note{margin-top:1.5rem}
+    .offline-note p{color:#9ca3af;line-height:1.7}
+    @media(max-width:980px){.video-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:680px){
+      .videos-shell{padding:96px 14px 54px}
+      .video-toolbar{grid-template-columns:1fr}
+      .video-grid{grid-template-columns:1fr}
+      .video-card-actions{grid-template-columns:1fr 1fr}
+    }
+  </style>
+  <script src="assets/js/config.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="bg-orb orb-1"></div><div class="bg-orb orb-2"></div><div class="bg-orb orb-3"></div>
+  <div class="noise-overlay"></div>
+
+  <header class="master-header-nav" role="banner">
+    <div class="nav-container-inner">
+      <div class="nav-brand-logo"><a href="index.html" aria-label="Kingdom Witness Global Home"><img src="assets/images/logo.png" alt="Kingdom Witness Global Ministries"></a></div>
+      <nav class="nav-center-pill" aria-label="Main Navigation">
+        <a href="index.html" class="nav-pill-item">Home</a>
+        <a href="about.html" class="nav-pill-item">About</a>
+        <a href="videos.html" class="nav-pill-item active">Messages</a>
+        <a href="contact.html" class="nav-pill-item">Contact</a>
+        <a href="funds.html" class="nav-pill-item">Give</a>
+      </nav>
+      <div class="nav-right-actions">
+        <a href="funds.html" class="nav-desktop-giving-btn"><i class="fa-solid fa-heart" style="color:var(--accent-red);font-size:12px"></i> Giving</a>
+        <button class="circular-menu-btn" id="menuTrigger" aria-label="Toggle Navigation Window" type="button"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="nav-backdrop" id="navBackdrop"></div>
+  <aside class="nav-overlay-panel" id="navDrawer" aria-label="Site Navigation Drawer">
+    <div style="margin-bottom:30px"><a href="index.html"><img src="assets/images/logo.png" alt="Kingdom Witness Global Logo" style="height:44px;display:block"></a></div>
+    <nav class="overlay-navbar">
+      <ul class="overlay-links">
+        <li><a href="index.html"><i class="fa-solid fa-house"></i> Home</a></li>
+        <li><a href="about.html"><i class="fa-solid fa-church"></i> About</a></li>
+        <li><a href="videos.html" style="color:var(--accent-red)"><i class="fa-solid fa-circle-play"></i> Messages</a></li>
+        <li><a href="contact.html"><i class="fa-solid fa-envelope"></i> Contact</a></li>
+        <li><a href="funds.html"><i class="fa-solid fa-hand-holding-dollar"></i> Give</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main id="main-content" class="videos-shell">
+    <section class="video-hero">
+      <div class="bible-badge-tag"><i class="fa-brands fa-youtube"></i> YouTube Library</div>
+      <h1>Messages</h1>
+      <p>Browse the ministry's YouTube uploads, search instantly, watch inside the app, or save a message to your personal Watch Later list.</p>
+
+      <div class="video-toolbar">
+        <div class="video-search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input id="videoSearchInput" type="search" placeholder="Search messages..." autocomplete="off" aria-label="Search ministry videos">
+        </div>
+        <button id="videoSearchBtn" class="glass-btn" type="button"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+      </div>
+
+      <div class="video-actions">
+        <button id="installAppBtn" class="glass-btn" type="button" hidden><i class="fa-solid fa-download"></i> Install App</button>
+        <a id="youtubeChannelLink" class="glass-btn" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-youtube"></i> YouTube Channel</a>
+      </div>
+    </section>
+
+    <div class="library-tabs" role="tablist" aria-label="Video library views">
+      <button class="library-tab is-active" data-view="all" type="button">All Videos</button>
+      <button class="library-tab" data-view="saved" type="button">Saved for Later</button>
+    </div>
+
+    <div class="video-status" id="videoStatus" aria-live="polite">Loading videos…</div>
+
+    <section class="video-grid" id="videoGrid" aria-label="Ministry video library"></section>
+
+    <div class="load-more-wrap">
+      <button class="glass-btn" id="loadMoreBtn" type="button" hidden><i class="fa-solid fa-plus"></i> Load More</button>
+    </div>
+
+    <section class="glass-panel offline-note">
+      <h2>Offline viewing</h2>
+      <p>The app can save video details to your <strong>Saved for Later</strong> list, but a normal website/PWA cannot download the actual YouTube media file from an embedded YouTube video. To support true offline playback inside this app, add ministry-owned MP4/audio files or an approved media source alongside each YouTube video.</p>
+    </section>
+  </main>
+
+  <div class="player-modal" id="playerModal" hidden aria-hidden="true">
+    <div class="player-card" role="dialog" aria-modal="true" aria-labelledby="playerTitle">
+      <div class="player-head">
+        <h2 id="playerTitle">Video</h2>
+        <button class="player-close" id="playerCloseBtn" type="button" aria-label="Close video"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="player-frame" id="playerFrame"></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-logo"><img src="assets/images/logo.png" alt="Kingdom Witness Global Logo"></div>
+      <div class="footer-socials">
+        <a href="tel:+2347037412480" class="social-icon" aria-label="Call ministry support"><i class="fa-solid fa-phone"></i></a>
+        <a href="https://wa.me/2347037412480" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="WhatsApp ministry support"><i class="fa-brands fa-whatsapp"></i></a>
+        <a href="mailto:support@kwgmministries.org" class="social-icon" aria-label="Email ministry support"><i class="fa-solid fa-envelope"></i></a>
+      </div>
+      <div class="footer-copyright"><p>&copy; 2026 Kingdom Witness Global Ministries. All Rights Reserved.</p></div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/videos-youtube.js" defer></script>
+  <script src="assets/js/pwa.js" defer></script>
+</body>
+</html>

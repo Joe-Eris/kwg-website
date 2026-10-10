@@ -1,0 +1,1223 @@
+/* ==========================================================================
+   1. GLOBAL VARIABLES & BASE DESIGN
+   ========================================================================== */
+:root {
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-hover: rgba(255, 255, 255, 0.18);
+  --glass-bg: rgba(20, 0, 0, 0.4);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  --accent-red: #ff3333;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: #0d0101;
+  color: white;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================================================================
+   2. CINEMATIC BACKGROUND ORBS & NOISE SMOOTHING
+   ========================================================================== */
+.bg-orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(100px);
+  z-index: -1;
+  animation: float 20s infinite ease-in-out;
+  opacity: 0.6;
+}
+
+.orb-1 { width: 600px; height: 600px; background: #4a0000; top: -100px; left: -100px; animation-delay: 0s; }
+.orb-2 { width: 500px; height: 500px; background: #2b0000; bottom: -100px; right: -100px; animation-delay: -5s; }
+.orb-3 { width: 300px; height: 300px; background: #800000; top: 40%; left: 40%; animation-delay: -10s; opacity: 0.3; }
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+}
+
+.noise-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ==========================================================================
+   3. MASTER RESPONSIVE HEADER NAVIGATION & DESKTOP GLASS PILL
+   ========================================================================== */
+.master-header-nav {
+  position: fixed;
+  top: 20px;
+  left: 0;
+  width: 100%;
+  z-index: 10000;
+  pointer-events: none;
+}
+
+.nav-container-inner {
+  max-width: 1260px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  width: 100%;
+}
+
+/* Left: Brand Logo */
+.nav-brand-logo {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+}
+
+.nav-brand-logo a {
+  display: inline-flex;
+  align-items: center;
+}
+
+.nav-brand-logo img {
+  height: 46px;
+  display: block;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.7));
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-brand-logo img:hover {
+  transform: scale(1.05);
+}
+
+/* Center: Circular Long Glassmorphism Navigation Menu (Laptop/Desktop) */
+.nav-center-pill {
+  pointer-events: auto;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: rgba(18, 2, 2, 0.62);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: 9999px; /* Circular long pill shape */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-center-pill:hover {
+  border-color: var(--glass-border-hover);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.65), 0 0 25px rgba(255, 51, 51, 0.18);
+}
+
+.nav-pill-item {
+  color: #d8d8d8;
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 8px 18px;
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  position: relative;
+  white-space: nowrap;
+}
+
+.nav-pill-item:hover {
+  color: #ffffff;
+  background: rgba(255, 51, 51, 0.16);
+  text-shadow: 0 0 10px rgba(255, 51, 51, 0.6);
+  transform: translateY(-1px);
+}
+
+.nav-pill-item.active {
+  color: #ffffff;
+  background: rgba(255, 51, 51, 0.22);
+  border: 1px solid rgba(255, 51, 51, 0.45);
+  box-shadow: 0 0 15px rgba(255, 51, 51, 0.3);
+}
+
+/* White Bible Nav Link with Red Hover */
+.nav-bible-pill {
+  color: #ffffff;
+}
+
+.nav-bible-pill i {
+  color: #ffffff;
+  font-size: 13.5px;
+  transition: all 0.3s ease;
+}
+
+.nav-bible-pill:hover i {
+  color: var(--accent-red);
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 8px var(--accent-red));
+}
+
+/* Right: Action Area */
+.nav-right-actions {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.nav-desktop-giving-btn {
+  padding: 9px 20px;
+  border-radius: 9999px;
+  background: rgba(255, 51, 51, 0.14);
+  border: 1px solid rgba(255, 51, 51, 0.38);
+  color: #ffffff;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.nav-desktop-giving-btn:hover {
+  background: var(--accent-red);
+  border-color: var(--accent-red);
+  color: #ffffff;
+  box-shadow: 0 0 25px rgba(255, 51, 51, 0.6);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   4. LAYOUT BLOCKS & TEXT GLOWS
+   ========================================================================== */
+.content-wrapper {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 110px 20px 60px 20px;
+  flex: 1;
+  z-index: 1;
+  width: 100%;
+}
+
+.intro-section {
+  text-align: center;
+  margin-bottom: 45px;
+}
+
+.intro-section h1 {
+  font-size: 34px;
+  color: white;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.intro-section p {
+  font-size: 14px;
+  color: #d1d1d1;
+  font-weight: 600;
+  letter-spacing: 3px;
+}
+
+/* ==========================================================================
+     5. PREMIUM GLASSMORPHIC CARD & INTERACTION BUTTONS
+     ========================================================================== */
+.card-container {
+  margin-bottom: 35px;
+}
+
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  box-shadow: var(--glass-shadow);
+  padding: 40px 25px;
+  text-align: center;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+}
+
+.glass-panel:hover {
+  border-color: var(--glass-border-hover);
+  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.7);
+}
+
+.glass-panel h4 {
+  font-size: 24px;
+  color: white;
+  margin-bottom: 5px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.glass-panel .card-subtitle {
+  font-size: 15px;
+  color: #d1d1d1;
+  margin-bottom: 25px;
+}
+
+.section-divider {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent-red);
+  margin: 25px 0 12px 0;
+  font-weight: 700;
+  opacity: 0.8;
+  text-shadow: 0 0 8px rgba(255, 51, 51, 0.3);
+}
+
+.button-flex-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.glass-btn {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  padding: 14px 20px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+  width: 100%;
+  max-width: 280px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.glass-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(255, 0, 0, 0.2);
+}
+
+.glass-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* ==========================================================================
+   6. GLOBAL COMPACT FOOTER STYLES
+   ========================================================================== */
+.site-footer {
+  background: rgba(13, 1, 1, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--glass-border);
+  padding: 45px 20px 25px 20px;
+  margin-top: auto;
+  z-index: 1;
+}
+
+.footer-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+}
+
+.footer-logo img {
+  height: 50px;
+  display: block;
+  opacity: 0.85;
+}
+
+.footer-socials {
+  display: flex;
+  gap: 20px;
+}
+
+.social-icon {
+  color: #d1d1d1;
+  font-size: 18px;
+  text-decoration: none;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+  color: white;
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.15);
+  transform: translateY(-3px);
+}
+
+.footer-copyright {
+  border-top: 1px solid var(--glass-border);
+  width: 100%;
+  text-align: center;
+  padding-top: 20px;
+}
+
+.footer-copyright p {
+  font-size: 13px;
+  color: #d1d1d1;
+  letter-spacing: 0.3px;
+}
+
+/* Page Entry Loading Animations */
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-down {
+  animation: fadeInDown 1s ease-out;
+}
+/* ==========================================================================
+   4. CIRCULAR MOBILE MENU BUTTON & RESPONSIVE DRAWER
+   ========================================================================== */
+/* Laptop Rule: The nav menu for laptop should NOT have the menu lines! */
+@media (min-width: 901px) {
+  .circular-menu-btn {
+    display: none !important;
+  }
+}
+
+/* Mobile Rule: Show circular menu button and hide desktop pill */
+@media (max-width: 900px) {
+  .nav-center-pill {
+    display: none !important;
+  }
+  .nav-desktop-giving-btn {
+    display: none !important;
+  }
+  .circular-menu-btn {
+    display: flex !important;
+  }
+}
+
+/* Circular Mobile Navigation Button */
+.circular-menu-btn {
+  width: 50px;
+  height: 50px;
+  background: rgba(22, 2, 2, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 50%;
+  box-shadow: var(--glass-shadow);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 10002;
+  outline: none;
+  padding: 0;
+}
+
+.circular-menu-btn span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background-color: #ffffff;
+  border-radius: 2px;
+  transition: background-color 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
+  transform-origin: center;
+}
+
+.circular-menu-btn:hover {
+  border-color: var(--glass-border-hover);
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(255, 51, 51, 0.35);
+}
+
+.circular-menu-btn:hover span {
+  background-color: var(--accent-red);
+}
+
+.circular-menu-btn.is-active span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+  background-color: var(--accent-red);
+}
+
+.circular-menu-btn.is-active span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.circular-menu-btn.is-active span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+  background-color: var(--accent-red);
+}
+
+/* Slide-out Backdrop Dimmer */
+.nav-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 9998;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.nav-backdrop.is-active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Slide-Out Navigation Drawer Panel */
+.nav-overlay-panel {
+  position: fixed;
+  top: 0;
+  right: -380px;
+  width: 320px;
+  max-width: 85vw;
+  height: 100vh;
+  background: rgba(18, 2, 2, 0.96);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border-left: 1px solid var(--glass-border);
+  box-shadow: -15px 0 50px rgba(0, 0, 0, 0.85);
+  z-index: 9999;
+  transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  padding: 100px 30px 40px 30px;
+  overflow-y: auto;
+}
+
+.nav-overlay-panel.is-active {
+  right: 0;
+}
+
+.overlay-navbar {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.overlay-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 0;
+  margin: 0;
+}
+
+.overlay-links a {
+  color: #e5e7eb;
+  text-decoration: none;
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.overlay-links a:hover {
+  color: var(--accent-red);
+  transform: translateX(8px);
+  text-shadow: 0 0 12px rgba(255, 51, 51, 0.5);
+}
+
+.overlay-links a i {
+  font-size: 16px;
+  width: 24px;
+  text-align: center;
+  transition: color 0.3s ease;
+}
+
+.overlay-links a:hover i {
+  color: var(--accent-red);
+}
+
+/* ==========================================================================
+   5. WHITE BIBLE IMAGE SHOWCASE & RED HOVER EFFECT
+   ========================================================================== */
+.bible-download-panel {
+  padding: 45px 35px;
+  position: relative;
+  overflow: hidden;
+}
+
+.bible-card-content {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 40px;
+  align-items: center;
+  width: 100%;
+}
+
+.bible-image-showcase {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bible-image-frame {
+  position: relative;
+  border-radius: 22px;
+  padding: 12px;
+  background: radial-gradient(circle at center, rgba(38, 4, 4, 0.7) 0%, rgba(13, 1, 1, 0.95) 100%);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.75);
+  cursor: pointer;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-block;
+  overflow: hidden;
+  max-width: 320px;
+  width: 100%;
+}
+
+.white-bible-img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 16px;
+  display: block;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: contrast(1.05) brightness(1.02);
+}
+
+.bible-glow-pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 85%;
+  height: 85%;
+  background: radial-gradient(circle, rgba(255, 51, 51, 0.45) 0%, rgba(255, 0, 0, 0) 70%);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.bible-hover-badge {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  background: rgba(13, 1, 1, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 6px 18px;
+  border-radius: 9999px;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: all 0.4s ease;
+  z-index: 2;
+  white-space: nowrap;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* White Bible Hovers Red Effect Execution */
+.bible-image-frame:hover {
+  border-color: rgba(255, 51, 51, 0.7);
+  box-shadow: 0 0 45px rgba(255, 51, 51, 0.4), 0 25px 60px rgba(0, 0, 0, 0.85);
+  transform: translateY(-6px) scale(1.02);
+}
+
+.bible-image-frame:hover .white-bible-img {
+  filter: contrast(1.1) brightness(1.05) drop-shadow(0 0 25px rgba(255, 51, 51, 0.9)) drop-shadow(0 0 50px rgba(255, 0, 0, 0.45));
+  transform: scale(1.03);
+}
+
+.bible-image-frame:hover .bible-glow-pulse {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.25);
+  animation: pulseGlow 2.5s infinite ease-in-out;
+}
+
+.bible-image-frame:hover .bible-hover-badge {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  border-color: var(--accent-red);
+  color: var(--accent-red);
+  box-shadow: 0 0 20px rgba(255, 51, 51, 0.45);
+}
+
+.bible-info-content {
+  text-align: left;
+}
+
+.bible-badge-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent-red);
+  background: rgba(255, 51, 51, 0.12);
+  border: 1px solid rgba(255, 51, 51, 0.3);
+  padding: 6px 14px;
+  border-radius: 9999px;
+  margin-bottom: 12px;
+}
+
+.bible-features-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 18px 0 24px 0;
+}
+
+.bible-feature-pill {
+  font-size: 13px;
+  color: #d1d1d1;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--glass-border);
+  padding: 6px 14px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+}
+
+.bible-feature-pill i {
+  color: var(--accent-red);
+  font-size: 11px;
+}
+
+.bible-feature-pill:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 51, 51, 0.4);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.65; transform: translate(-50%, -50%) scale(1.15); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.35); }
+}
+
+
+/* ==========================================================================
+   BIBLE APP STORE DOWNLOAD BUTTONS
+   ========================================================================== */
+.app-store-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.glass-btn-app {
+  min-width: 205px;
+  min-height: 62px;
+  padding: 10px 13px;
+  border-radius: 14px;
+  text-decoration: none;
+  color: #ffffff;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.025)),
+    rgba(13, 1, 1, 0.58);
+  border: 1px solid rgba(255,255,255,0.11);
+  box-shadow:
+    0 10px 28px rgba(0,0,0,0.38),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.32s ease,
+    background 0.32s ease,
+    box-shadow 0.32s ease;
+}
+
+.glass-btn-app::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 0%, rgba(255, 51, 51, 0.22), transparent 52%);
+  opacity: 0;
+  transition: opacity 0.32s ease;
+  pointer-events: none;
+}
+
+.glass-btn-app:hover,
+.glass-btn-app:focus-visible {
+  transform: translateY(-3px);
+  border-color: rgba(255, 51, 51, 0.55);
+  background:
+    linear-gradient(135deg, rgba(255, 51, 51, 0.16), rgba(255,255,255,0.035)),
+    rgba(13, 1, 1, 0.72);
+  box-shadow:
+    0 14px 34px rgba(0,0,0,0.48),
+    0 0 28px rgba(255, 51, 51, 0.18),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+}
+
+.glass-btn-app:hover::before,
+.glass-btn-app:focus-visible::before {
+  opacity: 1;
+}
+
+.store-icon-wrap {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  flex: 0 0 40px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 51, 51, 0.12);
+  border: 1px solid rgba(255, 51, 51, 0.24);
+  position: relative;
+  z-index: 1;
+}
+
+.store-icon-wrap i {
+  font-size: 22px;
+  color: #ffffff;
+}
+
+.store-copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.05;
+  text-align: left;
+  position: relative;
+  z-index: 1;
+}
+
+.store-kicker {
+  color: #a9abb0;
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.25px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.store-name {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.15px;
+}
+
+.store-arrow {
+  margin-left: auto;
+  color: #777b82;
+  font-size: 11px;
+  position: relative;
+  z-index: 1;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.glass-btn-app:hover .store-arrow,
+.glass-btn-app:focus-visible .store-arrow {
+  color: var(--accent-red);
+  transform: translate(2px, -2px);
+}
+
+/* ==========================================================================
+   6. GLOBAL MOBILE RESPONSIVENESS SUITE
+   ========================================================================== */
+@media (max-width: 900px) {
+  .bible-download-panel {
+    padding: 32px 20px;
+  }
+
+  .bible-card-content {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    text-align: center;
+  }
+
+  .bible-image-showcase {
+    order: 1;
+    width: 100%;
+  }
+
+  .bible-image-frame {
+    max-width: 260px;
+    margin: 0 auto;
+  }
+
+  .bible-info-content {
+    order: 2;
+    text-align: center;
+  }
+
+  .bible-badge-tag {
+    margin: 0 auto 12px auto;
+  }
+
+  .bible-features-list {
+    justify-content: center;
+  }
+
+  .app-store-badges {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .master-header-nav {
+    top: 15px;
+  }
+
+  .nav-container-inner {
+    padding: 0 16px;
+  }
+
+  .nav-brand-logo img {
+    height: 40px;
+  }
+
+  .circular-menu-btn {
+    width: 46px;
+    height: 46px;
+  }
+
+  .content-container-stack,
+  .content-wrapper {
+    padding-top: 85px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  .intro-section h1 {
+    font-size: 28px;
+  }
+
+  .intro-section p {
+    font-size: 12px;
+    letter-spacing: 2px;
+  }
+
+  .glass-panel {
+    padding: 30px 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .bible-image-frame {
+    max-width: 220px;
+    padding: 8px;
+  }
+
+  .white-bible-img {
+    border-radius: 12px;
+  }
+
+  .bible-download-panel {
+    padding: 24px 14px;
+  }
+
+  .app-store-badges {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .glass-btn-app {
+    max-width: 100% !important;
+    justify-content: center;
+  }
+}
+
+
+/* ==========================================================================
+   PRODUCTION UX / ACCESSIBILITY / PERFORMANCE LAYER
+   ========================================================================== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+.skip-link {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 99999;
+  transform: translateY(-140%);
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #0d0101;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform .2s ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--accent-red);
+  outline-offset: 3px;
+}
+
+img {
+  max-width: 100%;
+}
+
+main section,
+.glass-panel {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 500px;
+}
+
+/* Keep expensive blur effects lighter on smaller / less powerful screens. */
+@media (max-width: 768px) {
+  .glass-panel,
+  .site-footer,
+  .nav-center-pill,
+  .nav-overlay-panel {
+    backdrop-filter: blur(9px) saturate(135%) !important;
+    -webkit-backdrop-filter: blur(9px) saturate(135%) !important;
+  }
+}
+
+/* Respect users who prefer less animation. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+/* ==========================================================================
+   MOBILE / UX QA PASS
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100vh;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+.glass-btn,
+.nav-desktop-giving-btn,
+.social-icon,
+.circular-menu-btn,
+.ussd-action-btn {
+  min-height: 44px;
+}
+
+input,
+select,
+textarea {
+  font-size: 16px; /* prevents iOS zoom on focus */
+}
+
+textarea {
+  resize: vertical;
+}
+
+img,
+iframe,
+video {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .nav-container-inner {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .content-wrapper,
+  .content-container-stack,
+  .ussd-page-shell {
+    width: 100%;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+
+  .glass-panel {
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+
+  .site-footer {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .footer-container {
+    gap: 18px;
+  }
+
+  .footer-socials {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .form-grid-layout,
+  .contact-grid,
+  .about-grid,
+  .about-lower-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .funds-modal-card {
+    width: min(100%, 520px);
+    max-height: calc(100vh - 32px);
+    overflow-y: auto;
+    padding: 24px 18px !important;
+  }
+
+  .hero-banner-card {
+    min-height: 320px;
+  }
+
+  .hero-text-floating {
+    bottom: 28px !important;
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+
+  .hero-text-floating h1 {
+    line-height: 1.12;
+  }
+
+  .app-store-badges {
+    width: 100%;
+  }
+
+  .glass-btn-app {
+    width: 100%;
+    max-width: none !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .hero-banner-card {
+    height: 340px !important;
+  }
+
+  .hero-text-floating h1 {
+    font-size: clamp(24px, 8vw, 30px) !important;
+  }
+
+  .hero-text-floating p {
+    letter-spacing: 1.5px !important;
+  }
+
+  .panel-heading-label,
+  .intro-section h1 {
+    overflow-wrap: anywhere;
+  }
+
+  .glass-panel {
+    border-radius: 14px;
+  }
+}

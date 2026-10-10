@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="description" content="Contact Kingdom Witness Global Ministries for ministry enquiries, prayer, partnership and support.">
+  <meta name="theme-color" content="#0d0101">
+  <meta name="color-scheme" content="dark">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Kingdom Witness Global Ministries">
+  <meta property="og:description" content="Contact Kingdom Witness Global Ministries for ministry enquiries, prayer, partnership and support.">
+  <meta property="og:image" content="assets/images/logo.png">
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+
+  <title>Contact Us - Kingdom Witness Global Ministries</title>
+  
+   <!-- Font Awesome Vector Asset Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  
+  <!-- Google Fonts Connection Framework -->
+  <link rel="preconnect" href="https://googleapis.com">
+  <link rel="preconnect" href="https://gstatic.com" crossorigin>
+  <link href="https://googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Link Connection to your Shared global layout stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <style>
+    /* ==========================================================================
+       CONTACT PAGE PRESETS & ASYMMETRIC GRID CONTROLS
+       ========================================================================== */
+    .contact-wrapper-max {
+      max-width: 1200px !important; /* Wide screen workspace boundary */
+      width: 100%;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+      margin-top: 35px;
+    }
+
+    /* Long Form Glass Panel configurations */
+    .form-panel {
+      text-align: left !important;
+      padding: 45px 35px !important;
+    }
+
+    /* ==========================================================================
+       STYLIZED GLASS INPUT FIELDS (TAILORED TO THEME VARIABLES)
+       ========================================================================== */
+    .form-group {
+      margin-bottom: 22px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      color: #d1d1d1;
+    }
+
+    .glass-input, .glass-select, .glass-textarea {
+      width: 100%;
+      padding: 14px 16px;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      color: white;
+      font-family: 'Outfit', sans-serif;
+      font-size: 15px;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .glass-select option {
+      background-color: #0d0101; /* Matching body dark theme color */
+      color: white;
+    }
+
+    .glass-textarea {
+      resize: vertical;
+      min-height: 140px;
+    }
+
+    /* Glow focus states synced with your theme tokens */
+    .glass-input:focus, .glass-select:focus, .glass-textarea:focus {
+      background: rgba(0, 0, 0, 0.4);
+      border-color: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 0 0 4px rgba(255, 0, 0, 0.1);
+    }
+
+    /* Submit Action Trigger Button */
+    .submit-btn {
+      margin-top: 10px;
+      width: 100%;
+      max-width: 200px;
+    }
+
+    /* ==========================================================================
+       MEDIUM SIDEBAR CONNECT INFO CARD (WITH LIFT ANIMATION)
+       ========================================================================== */
+    .info-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 16px;
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow);
+      background: var(--glass-bg);
+      padding: 35px 25px;
+      height: fit-content; 
+      text-align: left !important;
+      
+      /* Smooth transitions for physics lift and lighting effects */
+      transition: border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                  transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                  box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .info-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    }
+
+    .info-card:hover {
+      border-color: var(--glass-border-hover);          
+      transform: translateY(-6px);                      
+      box-shadow: 0 20px 40px 0 rgba(255, 0, 0, 0.15),   
+                  var(--glass-shadow);                  
+    }
+
+    .info-card h4 {
+      font-size: 22px;
+      color: white;
+      margin-bottom: 25px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    /* Individual Connect rows */
+    .info-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .info-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .info-icon {
+      color: var(--accent-red);
+      font-size: 18px;
+      margin-top: 3px;
+      text-shadow: 0 0 10px rgba(255, 51, 51, 0.4);
+    }
+
+    .info-text h5 {
+      font-size: 15px;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 4px;
+    }
+
+    .info-text p {
+      font-size: 14px;
+      color: #d1d1d1;
+      line-height: 1.5;
+    }
+
+    /* ==========================================================================
+       RESPONSIVE RESOLUTION REGULATOR ENGINE
+       ========================================================================== */
+    @media (min-width: 992px) {
+      .contact-grid {
+        /* Asymmetric split: Form section occupies 63% width, Info card occupies 37% width */
+        grid-template-columns: 1.7fr 1fr; 
+        align-items: start;
+      }
+    }
+    /* ==========================================================================
+   INTERACTIVE FAQ ACCORDION STYLES
+   ========================================================================== */
+.faq-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+/* Base accordion panel using your glass tokens */
+.faq-item {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Pure CSS Click Reveal Trigger */
+.faq-item summary {
+  padding: 18px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  list-style: none; /* Removes default browser arrows */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  outline: none;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Custom indicator icon inside the summary trigger */
+.faq-item summary::after {
+  content: '+';
+  font-size: 20px;
+  color: var(--accent-red);
+  font-weight: bold;
+  transition: transform 0.3s ease;
+  text-shadow: 0 0 8px rgba(255, 51, 51, 0.4);
+}
+
+/* --- Added Hover Effect directly to the Question box --- */
+.faq-item summary:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: #ffffff;
+}
+
+.faq-item:hover {
+  border-color: var(--glass-border-hover);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Active open states */
+.faq-item[open] {
+  border-color: var(--glass-border-hover);
+  background: rgba(255, 255, 255, 0.02);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+.faq-item[open] summary::after {
+  transform: rotate(45deg); /* Rotates the + icon into an X */
+}
+
+/* Hides default browser arrow indicators for Safari Webkit engines */
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Revealing Answer panel */
+.faq-answer {
+  padding: 0 20px 20px 20px;
+  font-size: 15px;
+  color: #d1d1d1;
+  line-height: 1.7;
+  border-top: 1px solid rgba(255, 255, 255, 0.03);
+  padding-top: 15px;
+  animation: slideInDown 0.25s ease-out; /* Smooth dropdown layout drop animation */
+}
+
+@keyframes slideInDown {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+  </style>
+  <link rel="manifest" href="manifest.webmanifest">
+  <script src="assets/js/config.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <!-- Ambient Dynamic Scene Elements -->
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+  <div class="bg-orb orb-3"></div>
+  <div class="noise-overlay"></div>
+
+  <!-- Master Navigation Header (Desktop Centered Glass Pill + Responsive Mobile Trigger) -->
+  <header class="master-header-nav" role="banner">
+    <div class="nav-container-inner">
+      <!-- Left: Top Brand Floating Logo -->
+      <div class="nav-brand-logo">
+        <a href="index.html" aria-label="Kingdom Witness Global Home">
+          <img src="assets/images/logo.png" alt="Kingdom Witness Global Ministries" decoding="async">
+        </a>
+      </div>
+
+      <!-- Center: Circular Long Glassmorphism Navigation Menu (Laptop/Desktop) -->
+      <nav class="nav-center-pill" aria-label="Main Navigation">
+        <a href="index.html" class="nav-pill-item">Home</a>
+        <a href="about.html" class="nav-pill-item">About</a>
+        <a href="videos.html" class="nav-pill-item">Messages</a>
+        <a href="contact.html" class="nav-pill-item active">Contact</a>
+        <a href="funds.html" class="nav-pill-item">Give</a>
+        <a href="index.html#bible-section" class="nav-pill-item nav-bible-pill" title="Holy Bible"><i class="fa-solid fa-book-bible"></i> Bible</a>
+      </nav>
+
+      <!-- Right: Action CTA & Mobile Navigation Trigger -->
+      <div class="nav-right-actions">
+        <!-- Desktop Giving Action Link -->
+        <a href="funds.html" class="nav-desktop-giving-btn">
+          <i class="fa-solid fa-heart" style="color: var(--accent-red); font-size: 12px;"></i> Giving
+        </a>
+
+        <!-- Circular Mobile Navigation Button (Hidden on laptop/desktop, shown on mobile) -->
+        <button class="circular-menu-btn" id="menuTrigger" aria-label="Toggle Navigation Window" type="button">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Backdrop Dimmer Overlay -->
+  <div class="nav-backdrop" id="navBackdrop"></div>
+
+  <!-- Slide-Out Overlay Drawer Panel for Mobile -->
+  <aside class="nav-overlay-panel" id="navDrawer" aria-label="Site Navigation Drawer">
+    <div style="margin-bottom: 30px;">
+      <a href="index.html">
+        <img src="assets/images/logo.png" alt="Kingdom Witness Global Logo" style="height: 44px; display: block;" decoding="async">
+      </a>
+    </div>
+    <nav class="overlay-navbar">
+      <ul class="overlay-links">
+        <li><a href="index.html"><i class="fa-solid fa-house"></i> Home</a></li>
+        <li><a href="about.html"><i class="fa-solid fa-church"></i> About</a></li>
+        <li><a href="videos.html"><i class="fa-solid fa-circle-play"></i> Messages</a></li>
+        <li><a href="contact.html" style="color: var(--accent-red);"><i class="fa-solid fa-envelope"></i> Contact</a></li>
+        <li><a href="funds.html"><i class="fa-solid fa-hand-holding-dollar"></i> Give</a></li>
+        <li><a href="index.html#bible-section"><i class="fa-solid fa-book-bible"></i> Bible</a></li>
+      </ul>
+      <a href="funds.html" class="glass-btn" style="text-decoration: none; text-align: center; margin-top: 30px; width: 100%; max-width: 100%; display: block;">
+        Giving & Support
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Central Structural Workspace Container -->
+  <div class="content-wrapper contact-wrapper-max animate-fade-in-down">
+    
+    <!-- Intro Typography Node -->
+    <section class="intro-section">
+      <h1>Get In Touch</h1>
+      <p>We Are Here For You!</p>
+    </section>
+
+    <!-- Asymmetric Split Bento Layout System -->
+    <div class="contact-grid">
+      
+      <!-- Left Panel Layer: Functional Interactive Form (Occupies larger column slice) -->
+      <form class="glass-panel form-panel" id="contactForm" action="#" method="POST">
+        
+        <div class="section-divider" style="margin-top: 0; margin-bottom: 25px;">Send a Message</div>
+
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" class="glass-input" placeholder="Enter your full name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" class="glass-input" placeholder="Enter your email address" required>
+        </div>
+
+        <div class="form-group">
+          <label for="subject">Purpose of Contact</label>
+          <select id="subject" name="subject" class="glass-select" required>
+            <option value="" disabled selected>Select a purpose</option>
+            <option value="general">General Inquiry</option>
+            <option value="prayer">Prayer Request</option>
+            <option value="testimony">Share Testimony</option>
+            <option value="partnership">Ministry Partnership</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Your Message</label>
+          <textarea id="message" name="message" class="glass-textarea" placeholder="Type your message here..." required></textarea>
+        </div>
+
+        <!-- Styled using your existing glass-btn properties -->
+        <button type="submit" class="glass-btn submit-btn">Submit Message</button>
+
+      <p id="contactStatus" class="contact-status" aria-live="polite"></p>
+      </form>
+
+      <!-- Right Panel Layer: Medium-Sized Connect Details Card -->
+      <aside class="info-card">
+        <h4>Contact Information</h4>
+        
+        <!-- Info Block: Location -->
+        <div class="info-item">
+          <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
+          <div class="info-text">
+            <h5>International Headquarters</h5>
+            <p>Isoko North Regional Administrative Hub,<br>Delta State, Nigeria.</p>
+          </div>
+        </div>
+
+        <!-- Info Block: Phone -->
+        <div class="info-item">
+          <div class="info-icon"><i class="fas fa-phone-alt"></i></div>
+          <div class="info-text">
+            <h5>Call Center</h5>
+            <p>+2347037412480<br>Mon - Fri (8:00 AM - 5:00 PM)</p>
+          </div>
+        </div>
+
+        <!-- Info Block: Email -->
+        <div class="info-item">
+          <div class="info-icon"><i class="fas fa-envelope"></i></div>
+          <div class="info-text">
+            <h5>Electronic Desk</h5>
+            <p>info@kwgmministries.org<br>support@kwgmministries.org</p>
+          </div>
+        </div>
+
+        <!-- Info Block: Service Hours -->
+        <div class="info-item">
+          <div class="info-icon"><i class="fas fa-clock"></i></div>
+          <div class="info-text">
+            <h5>Weekly Assembly Hours</h5>
+            <p>Sunday Services: 4:30 PM WAT<br>Mid-Week Intercession: Tue 5:00 PM</p>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+    
+    </div>
+<!-- Drop this block directly inside your left column panel wrapper -->
+<div class="glass-panel faq-panel" style="padding: 40px 35px !important;">
+  <div class="section-divider" style="margin-top: 0; margin-bottom: 25px;">Frequently Asked Questions</div>
+  
+  <div class="faq-container">
+    
+    <details class="faq-item">
+      <summary>How can I submit a prayer request directly to the Ministry?</summary>
+      <div class="faq-answer">
+        You can use the purpose drop-down menu in the contact form above to select "Prayer Request". All logs sent through this portal are channeled directly to our intercession department team for immediate prayer support.
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>What are the details for direct structural banking partners?</summary>
+      <div class="faq-answer">
+        For security tracking and accountability verification, click on the "Bank Transfer" button inside the platform homepage dashboard card to display active account numbers, or email our finance desk at billing@kwgmministries.org.
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>When are the live ministry broadcasts held?</summary>
+      <div class="faq-answer">
+        Our global prophetic services stream live every Sunday at 8:00 AM WAT and Mid-Week apostolic cross-examinations execute on Wednesdays at 5:00 PM WAT across all our online social platform links listed in the footer.
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Can I partner with the ministry globally?</summary>
+      <div class="faq-answer">
+        Yes! Select the "Ministry Partnership" option on the message form. A desk representative from our operations council will follow up electronically with onboarding verification metrics.
+      </div>
+    </details>
+
+  </div>
+</div>
+
+  </div>
+
+   <!-- Global Site Base Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-logo">
+        <img src="assets/images/logo.png" alt="Kingdom Witness Global Logo" decoding="async">
+      </div>
+      <div class="footer-socials">
+        <a href="tel:+2347037412480" class="social-icon" aria-label="Call ministry support"><i class="fa-solid fa-phone"></i></a>
+        <a href="https://wa.me/2347037412480" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="WhatsApp ministry support"><i class="fa-brands fa-whatsapp"></i></a>
+        <a href="mailto:support@kwgmministries.org" class="social-icon" aria-label="Email ministry support"><i class="fa-solid fa-envelope"></i></a>
+      </div>
+      <div class="footer-copyright">
+        <p>&copy; 2026 Kingdom Witness Global Ministries. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+  <script src="assets/js/contact.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/pwa.js" defer></script>
+</body>
+</html>

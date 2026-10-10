@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="description" content="Complete the Kingdom Witness Global Ministries giving form for card or USSD giving.">
+  <meta name="theme-color" content="#0d0101">
+  <meta name="color-scheme" content="dark">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Kingdom Witness Global Ministries">
+  <meta property="og:description" content="Complete the Kingdom Witness Global Ministries giving form for card or USSD giving.">
+  <meta property="og:image" content="assets/images/logo.png">
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+
+  <title>Covenant Partner - Kingdom Witness Global Ministries</title>
+  
+    <!-- Font Awesome Vector Asset Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  
+  <!-- Google Fonts Connection Framework -->
+  <link rel="preconnect" href="https://googleapis.com">
+  <link rel="preconnect" href="https://gstatic.com" crossorigin>
+  <link href="https://googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Link Connection to External Custom Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    /* ==========================================================================
+   1. VARIABLES, RESET & SYSTEM LAYOUT TOKENS
+   ========================================================================== */
+:root {
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-hover: rgba(255, 255, 255, 0.18);
+  --glass-bg: rgba(20, 0, 0, 0.4);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  --accent-red: #ff3333;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: #0d0101;
+  color: white;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.noise-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://w3.org id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+.content-container-stack {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 100px 20px 60px 20px;
+  flex: 1;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header navigation rules managed globally in style.css */
+
+/* ==========================================================================
+   3. BACK NAVIGATION TERMINAL CONTROLLER
+   ========================================================================== */
+.back-action-row {
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.back-nav-btn {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--glass-border);
+  color: #d1d1d1;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.back-nav-btn:hover {
+  border-color: var(--glass-border-hover);
+  color: white;
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateX(-2px);
+}
+
+/* ==========================================================================
+   4. PREMIUM COVENANT GIVING FORM COMPONENTS
+   ========================================================================== */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  box-shadow: var(--glass-shadow);
+  padding: 45px 35px;
+  text-align: left;
+  position: relative;
+}
+
+.glass-panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+}
+
+.section-divider {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent-red);
+  margin-bottom: 25px;
+  font-weight: 700;
+  opacity: 0.8;
+  text-shadow: 0 0 8px rgba(255, 51, 51, 0.3);
+}
+
+.form-grid-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.form-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-field-group label {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  color: #d1d1d1;
+}
+
+.glass-input-field, .glass-select-field, .glass-textbox-field, .gender-popup-trigger {
+  width: 100%;
+  padding: 14px 16px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  color: white;
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-select-field option {
+  background-color: #0d0101;
+  color: white;
+}
+
+.gender-popup-trigger {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+}
+
+.gender-popup-trigger i {
+  font-size: 12px;
+  color: #9ca3af;
+  transition: transform 0.3s ease;
+}
+
+.glass-textbox-field {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.glass-input-field:focus, .glass-select-field:focus, .glass-textbox-field:focus, .gender-popup-trigger:focus {
+  background: rgba(0, 0, 0, 0.45);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 0 4px rgba(255, 0, 0, 0.12);
+}
+
+.amount-input-matrix {
+  display: flex;
+  gap: 10px;
+}
+
+.glass-select-currency {
+  max-width: 95px;
+  text-align: center;
+}
+
+.form-submit-trigger {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  padding: 14px 20px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+  width: 100%;
+  max-width: 240px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.form-submit-trigger:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(255, 0, 0, 0.2);
+}
+
+@media (min-width: 768px) {
+  .form-grid-layout { grid-template-columns: 1fr 1fr; }
+  .full-width-column { grid-column: span 2; }
+}
+
+/* ==========================================================================
+   5. GENDER PICKER INTERACTIVE POP-UP MODAL PANEL
+   ========================================================================== */
+.gender-modal-backdrop {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(13, 1, 1, 0.6);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  z-index: 20000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.gender-modal-backdrop.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.gender-selection-card {
+  max-width: 360px;
+  width: 90%;
+  background: rgba(20, 0, 0, 0.65);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  padding: 30px 20px;
+  text-align: center;
+  box-shadow: var(--glass-shadow);
+}
+
+.gender-selection-card h4 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  letter-spacing: 0.5px;
+}
+
+.gender-options-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.gender-choice-btn {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: white;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.25s ease;
+}
+
+.gender-choice-btn:hover {
+  background: rgba(255, 51, 51, 0.1);
+  border-color: var(--accent-red);
+  box-shadow: 0 0 15px rgba(255, 51, 51, 0.15);
+}
+
+/* ==========================================================================
+   6. COMPACT MASTER FOOTER STYLES
+   ========================================================================== */
+.site-footer {
+  background: rgba(13, 1, 1, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--glass-border);
+  padding: 45px 20px 25px 20px;
+  margin-top: auto;
+  z-index: 1;
+}
+
+.footer-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+}
+
+.footer-logo img {
+  height: 50px;
+  display: block;
+  opacity: 0.85;
+}
+
+.footer-socials {
+  display: flex;
+  gap: 20px;
+}
+
+.social-icon {
+  color: #d1d1d1;
+  font-size: 18px;
+  text-decoration: none;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+  color: white;
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.15);
+  transform: translateY(-3px);
+}
+
+.footer-copyright {
+  border-top: 1px solid var(--glass-border);
+  width: 100%;
+  text-align: center;
+  padding-top: 20px;
+}
+
+.footer-copyright p {
+  font-size: 13px;
+  color: #d1d1d1;
+  letter-spacing: 0.3px;
+}
+/* ==========================================================================
+   CUSTOMIZED DARK RED DROPDOWN SELECTION RULES
+   ========================================================================== */
+.glass-select-field {
+  cursor: pointer;
+  /* Removes default browser system background layouts */
+  background-color: rgba(20, 0, 0, 0.5) !important;
+  color: white !important;
+  border: 1px solid var(--glass-border);
+  transition: all 0.3s ease;
+}
+
+/* Forces the option container list boxes to be dark red matching the orb style */
+.glass-select-field option {
+  background-color: #1a0202 !important; /* Deep dark velvet red tone */
+  color: #ffffff !important;
+  padding: 12px;
+}
+
+/* Hover effect on dropdown trigger field */
+.glass-select-field:hover {
+  border-color: var(--glass-border-hover);
+  background-color: rgba(40, 0, 0, 0.6) !important; /* Glow tint on hover */
+  box-shadow: 0 0 15px rgba(255, 51, 51, 0.15);
+}
+
+/* Focused click layout profile */
+.glass-select-field:focus {
+  background-color: #1a0202 !important;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+/* ==========================================================================
+   CURRENCY DROPDOWN SPECIAL SELECTION RULES
+   ========================================================================== */
+.glass-select-currency {
+  max-width: 95px;
+  text-align: center;
+  cursor: pointer;
+  background-color: rgba(20, 0, 0, 0.5) !important;
+  color: white !important;
+  border: 1px solid var(--glass-border);
+  transition: all 0.3s ease;
+}
+
+.glass-select-currency option {
+  background-color: #1a0202 !important; /* Deep dark velvet red tone */
+  color: #ffffff !important;
+  padding: 12px;
+}
+
+.glass-select-currency:hover {
+  border-color: var(--glass-border-hover);
+  background-color: rgba(40, 0, 0, 0.6) !important;
+  box-shadow: 0 0 15px rgba(255, 51, 51, 0.15);
+}
+
+/* ==========================================================================
+   UPDATED GENDER CHANNELS MODAL & HOVER ACTIONS
+   ========================================================================== */
+.gender-selection-card {
+  max-width: 360px;
+  width: 90%;
+  background: #1a0202 !important; /* Forces dark red background matching dropdowns */
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  padding: 30px 20px;
+  text-align: center;
+  box-shadow: var(--glass-shadow);
+  transition: border-color 0.3s ease;
+}
+
+.gender-selection-card h4 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  letter-spacing: 0.5px;
+  color: white;
+}
+
+.gender-choice-btn {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: white;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hover state: Button background pops deep red and changes icon shadows */
+.gender-choice-btn:hover {
+  background: rgba(255, 51, 51, 0.15) !important;
+  border-color: var(--accent-red) !important;
+  box-shadow: 0 0 20px rgba(255, 51, 51, 0.3);
+  transform: translateY(-2px);
+}
+/* ==========================================================================
+   OFFERING SELECTION SPECIAL DROPDOWN RULES
+   ========================================================================== */
+.glass-select-offering {
+  cursor: pointer;
+  background-color: rgba(20, 0, 0, 0.5) !important;
+  color: white !important;
+  border: 1px solid var(--glass-border);
+  transition: all 0.3s ease;
+}
+
+/* Forces the dropdown options window list to stay dark velvet red */
+.glass-select-offering option {
+  background-color: #1a0202 !important; /* Deep dark velvet red tone */
+  color: #ffffff !important;
+  padding: 12px;
+}
+
+/* Hover Action: Glows crimson red when user hovers mouse over it */
+.glass-select-offering:hover {
+  border-color: var(--glass-border-hover);
+  background-color: rgba(40, 0, 0, 0.6) !important;
+  box-shadow: 0 0 15px rgba(255, 51, 51, 0.25);
+}
+
+/* Focused click layout profile */
+.glass-select-offering:focus {
+  background-color: #1a0202 !important;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+  
+    /* Worldwide Country → State/Region → City dropdown states */
+    .glass-select-field:disabled {
+      opacity: 0.58;
+      cursor: not-allowed;
+    }
+
+    .glass-select-field.is-loading {
+      opacity: 0.72;
+      cursor: progress;
+    }
+
+
+    .form-submit-trigger:disabled {
+      opacity: 0.65;
+      cursor: wait;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+</style>
+  <link rel="manifest" href="manifest.webmanifest">
+  <script src="assets/js/config.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <!-- Background Noise Mesh Texture Sheet Overlay -->
+  <div class="noise-overlay"></div>
+
+  <!-- Master Navigation Header (Desktop Centered Glass Pill + Responsive Mobile Trigger) -->
+  <header class="master-header-nav" role="banner">
+    <div class="nav-container-inner">
+      <!-- Left: Top Brand Floating Logo -->
+      <div class="nav-brand-logo">
+        <a href="index.html" aria-label="Kingdom Witness Global Home">
+          <img src="assets/images/logo.png" alt="Kingdom Witness Global Ministries" decoding="async">
+        </a>
+      </div>
+
+      <!-- Center: Circular Long Glassmorphism Navigation Menu (Laptop/Desktop) -->
+      <nav class="nav-center-pill" aria-label="Main Navigation">
+        <a href="index.html" class="nav-pill-item">Home</a>
+        <a href="about.html" class="nav-pill-item">About</a>
+        <a href="videos.html" class="nav-pill-item">Messages</a>
+        <a href="contact.html" class="nav-pill-item">Contact</a>
+        <a href="funds.html" class="nav-pill-item active">Give</a>
+        <a href="index.html#bible-section" class="nav-pill-item nav-bible-pill" title="Holy Bible"><i class="fa-solid fa-book-bible"></i> Bible</a>
+      </nav>
+
+      <!-- Right: Action CTA & Mobile Navigation Trigger -->
+      <div class="nav-right-actions">
+        <!-- Desktop Giving Action Link -->
+        <a href="funds.html" class="nav-desktop-giving-btn">
+          <i class="fa-solid fa-heart" style="color: var(--accent-red); font-size: 12px;"></i> Giving
+        </a>
+
+        <!-- Circular Mobile Navigation Button (Hidden on laptop/desktop, shown on mobile) -->
+        <button class="circular-menu-btn" id="menuTrigger" aria-label="Toggle Navigation Window" type="button">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Backdrop Dimmer Overlay -->
+  <div class="nav-backdrop" id="navBackdrop"></div>
+
+  <!-- Slide-Out Overlay Drawer Panel for Mobile -->
+  <aside class="nav-overlay-panel" id="navDrawer" aria-label="Site Navigation Drawer">
+    <div style="margin-bottom: 30px;">
+      <a href="index.html">
+        <img src="assets/images/logo.png" alt="Kingdom Witness Global Logo" style="height: 44px; display: block;" decoding="async">
+      </a>
+    </div>
+    <nav class="overlay-navbar">
+      <ul class="overlay-links">
+        <li><a href="index.html"><i class="fa-solid fa-house"></i> Home</a></li>
+        <li><a href="about.html"><i class="fa-solid fa-church"></i> About</a></li>
+        <li><a href="videos.html"><i class="fa-solid fa-circle-play"></i> Messages</a></li>
+        <li><a href="contact.html"><i class="fa-solid fa-envelope"></i> Contact</a></li>
+        <li><a href="funds.html" style="color: var(--accent-red);"><i class="fa-solid fa-hand-holding-dollar"></i> Funds</a></li>
+        <li><a href="index.html#bible-section"><i class="fa-solid fa-book-bible"></i> Bible</a></li>
+      </ul>
+      <a href="funds.html" class="glass-btn" style="text-decoration: none; text-align: center; margin-top: 30px; width: 100%; max-width: 100%; display: block;">
+        Giving & Support
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Vertical Page Content Stack Layout Container -->
+  <div class="content-container-stack">
+
+    <!-- Back to Fund Page Controller Row -->
+    <div class="back-action-row">
+      <a href="funds.html" class="back-nav-btn">
+        <i class="fas fa-chevron-left"></i> Back
+      </a>
+    </div>
+
+    <!-- Covenant Form Panel -->
+    <div class="glass-panel">
+      <div class="section-divider">Giving Covenant Form</div>
+      
+      <form action="#" method="POST" class="form-grid-layout" id="givingForm">
+        
+        <!-- Title Dropdown Selection Row -->
+<div class="form-field-group">
+  <label for="title">Title</label>
+  <select id="title" name="title" class="glass-select-field" required>
+    <option value="" disabled selected style="color: #9ca3af;">Select title</option>
+    <option value="Pastor">Pastor</option>
+    <option value="Prophet">Prophet</option>
+    <option value="Evangelist">Evangelist</option>
+    <option value="Deacon/Deaconess">Deacon / Deaconess</option>
+    <option value="Brother">Brother</option>
+    <option value="Sister">Sister</option>
+    <option value="Mr">Mr.</option>
+    <option value="Mrs">Mrs.</option>
+  </select>
+</div>
+
+<!-- Offering Type Dropdown Selection Row (Updated Style Class) -->
+<div class="form-field-group">
+  <label for="offeringType">Offering Type</label>
+  <select id="offeringType" name="offeringType" class="glass-select-field glass-select-offering" required>
+    <option value="" disabled selected style="color: #9ca3af;">Select offering type</option>
+    <option value="General Offering">General Offering</option>
+    <option value="Tithe Offering">Tithe Offering</option>
+    <option value="Thanksgiving Offering">Thanksgiving Offering</option>
+    <option value="Building Offering">Building Offering</option>
+    <option value="Land Project">Land Project</option>
+  </select>
+</div>
+
+
+       <!-- Offering Amount Matrix Block Row -->
+<div class="form-field-group">
+  <label for="amountDisplay">Offering Amount</label>
+  <div class="amount-input-matrix">
+    <select id="currency" name="currency" class="glass-select-field glass-select-currency">
+      <option value="NGN">₦ (NGN)</option>
+      <option value="USD">$ (USD)</option>
+      <option value="GBP">£ (GBP)</option>
+      <option value="EUR">€ (EUR)</option>
+    </select>
+    <input type="text" id="amountDisplay" class="glass-input-field" placeholder="0.00" required>
+    <input type="hidden" id="amountRaw" name="amount">
+  </div>
+</div>
+
+        <div class="form-field-group">
+          <label>Gender</label>
+          <div id="genderTrigger" class="gender-popup-trigger" tabindex="0">
+            <span id="genderOutput" style="color: #9ca3af;">Choose gender...</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <input type="hidden" id="genderRaw" name="gender" required>
+        </div>
+
+        <div class="form-field-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" class="glass-input-field" placeholder="Enter your email address" required>
+        </div>
+
+        <div class="form-field-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="phone" class="glass-input-field" placeholder="Enter phone contact" required>
+        </div>
+
+        <div class="form-field-group">
+          <label for="country">Country</label>
+          <select id="country" name="country" class="glass-select-field" required>
+            <option value="" selected disabled>Select country</option>
+          </select>
+        </div>
+
+        <div class="form-field-group">
+          <label for="state">State / Province / Region</label>
+          <select id="state" name="state" class="glass-select-field" required disabled>
+            <option value="" selected disabled>Select country first</option>
+          </select>
+        </div>
+
+        <div class="form-field-group">
+          <label for="city">Town / City</label>
+          <select id="city" name="city" class="glass-select-field" required disabled>
+            <option value="" selected disabled>Select state first</option>
+          </select>
+        </div>
+
+        <div class="form-field-group full-width-column">
+          <label for="subject">Subject</label>
+          <textarea id="subject" name="subject" class="glass-textbox-field" placeholder="Write your message here" required></textarea>
+        </div>
+
+        <div class="full-width-column" style="display: flex; justify-content: center;">
+          <button type="submit" class="form-submit-trigger"><a href="#"></a>Submit Now</button>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+
+  <!-- Interactive Gender Modal Component (Updated Backdrop Card) -->
+<div class="gender-modal-backdrop" id="genderModal">
+  <div class="gender-selection-card">
+    <h4>Select Gender</h4>
+    <div class="gender-options-stack">
+      <button type="button" class="gender-choice-btn" data-value="Male">
+        <i class="fas fa-mars" style="color: #3b82f6; text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);"></i> Male
+      </button>
+      <button type="button" class="gender-choice-btn" data-value="Female">
+        <i class="fas fa-venus" style="color: #ec4899; text-shadow: 0 0 10px rgba(236, 72, 153, 0.5);"></i> Female
+      </button>
+    </div>
+  </div>
+</div>
+
+  <!-- Global Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-logo">
+        <img src="assets/images/logo.png" alt="Kingdom Witness Global Logo" decoding="async">
+      </div>
+      <div class="footer-socials">
+        <a href="tel:+2347037412480" class="social-icon" aria-label="Call ministry support"><i class="fa-solid fa-phone"></i></a>
+        <a href="https://wa.me/2347037412480" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="WhatsApp ministry support"><i class="fa-brands fa-whatsapp"></i></a>
+        <a href="mailto:support@kwgmministries.org" class="social-icon" aria-label="Email ministry support"><i class="fa-solid fa-envelope"></i></a>
+      </div>
+      <div class="footer-copyright">
+        <p>&copy; 2026 Kingdom Witness Global Ministries. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* 1. REAL-TIME COMMA SEPARATOR LOGIC ENGINE */
+    const amountDisplay = document.getElementById('amountDisplay');
+    const amountRaw = document.getElementById('amountRaw');
+
+    amountDisplay.addEventListener('input', (e) => {
+      let value = e.target.value.replace(/,/g, '');
+      value = value.replace(/\D/g, '');
+      
+      if (parseInt(value) > 10000000) {
+        value = "10000000";
+      }
+
+      if (value) {
+        amountRaw.value = value;
+        amountDisplay.value = Number(value).toLocaleString('en-US');
+      } else {
+        amountRaw.value = '';
+        amountDisplay.value = '';
+      }
+    });
+
+    /* 2. INTERACTIVE GENDER CHANNELS MODAL POP-UP SYSTEM */
+    const genderTrigger = document.getElementById('genderTrigger');
+    const genderModal = document.getElementById('genderModal');
+    const genderOutput = document.getElementById('genderOutput');
+    const genderRaw = document.getElementById('genderRaw');
+    const choiceButtons = document.querySelectorAll('.gender-choice-btn');
+
+    genderTrigger.addEventListener('click', () => {
+      genderModal.classList.add('is-visible');
+    });
+
+    choiceButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const selectedValue = button.getAttribute('data-value');
+        genderRaw.value = selectedValue;
+        genderOutput.textContent = selectedValue;
+        genderOutput.style.color = "white";
+        genderModal.classList.remove('is-visible');
+      });
+    });
+
+    genderModal.addEventListener('click', (e) => {
+      if (e.target === genderModal) {
+        genderModal.classList.remove('is-visible');
+      }
+    });
+
+
+    /* 3. GIVING CHANNEL ROUTING
+       USSD: send the validated amount to ussd.html.
+       Card: open Flutterwave Inline Checkout using the same validated form data.
+    */
+    const givingForm = document.getElementById('givingForm');
+    const givingParams = new URLSearchParams(window.location.search);
+    const givingMethod = givingParams.get('method');
+
+    /*
+      IMPORTANT:
+      Replace this TEST placeholder with your real Flutterwave PUBLIC KEY.
+      Never put your Flutterwave SECRET KEY inside this HTML/JavaScript file.
+    */
+    let FLUTTERWAVE_PUBLIC_KEY = '';
+    const KWGM_API_BASE = (window.KWGM_CONFIG && window.KWGM_CONFIG.API_BASE) || '/api';
+
+    async function ensureFlutterwavePublicKey() {
+      if (FLUTTERWAVE_PUBLIC_KEY) return FLUTTERWAVE_PUBLIC_KEY;
+      const response = await fetch(`${KWGM_API_BASE}/public/payment-config`);
+      const data = await response.json();
+      if (!response.ok || !data.flutterwave_public_key) throw new Error('Card payments are not configured.');
+      FLUTTERWAVE_PUBLIC_KEY = data.flutterwave_public_key;
+      return FLUTTERWAVE_PUBLIC_KEY;
+    }
+
+    let flutterwaveLoadPromise = null;
+
+    function loadFlutterwave() {
+      if (typeof FlutterwaveCheckout === 'function') {
+        return Promise.resolve();
+      }
+
+      if (flutterwaveLoadPromise) return flutterwaveLoadPromise;
+
+      flutterwaveLoadPromise = new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = 'https://checkout.flutterwave.com/v3.js';
+        script.async = true;
+        script.onload = resolve;
+        script.onerror = () => reject(new Error('Flutterwave could not be loaded.'));
+        document.head.appendChild(script);
+      });
+
+      return flutterwaveLoadPromise;
+    }
+
+
+    function makeTransactionReference() {
+      const randomPart = Math.random().toString(36).slice(2, 10).toUpperCase();
+      return `KWGM-${Date.now()}-${randomPart}`;
+    }
+
+    function setSubmitState(isProcessing) {
+      const submitButton = givingForm.querySelector('.form-submit-trigger');
+      if (!submitButton) return;
+
+      submitButton.disabled = isProcessing;
+      submitButton.innerHTML = isProcessing
+        ? '<i class="fa-solid fa-spinner fa-spin"></i> Opening Secure Payment...'
+        : 'Submit Now';
+    }
+
+    if (givingForm) {
+      givingForm.addEventListener('submit', async (e) => {
+        if (!genderRaw.value) {
+          e.preventDefault();
+          genderModal.classList.add('is-visible');
+          return;
+        }
+
+        const amount = amountRaw.value.trim();
+        const currency = document.getElementById('currency').value;
+        const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const offeringType = document.getElementById('offeringType').value;
+        const title = document.getElementById('title').value;
+
+        if (!amount) {
+          e.preventDefault();
+          amountDisplay.focus();
+          return;
+        }
+
+        /* USSD route */
+        if (givingMethod === 'ussd') {
+          e.preventDefault();
+
+          if (currency !== 'NGN') {
+            alert('USSD giving is currently available in Nigerian Naira (NGN). Please select NGN to continue.');
+            document.getElementById('currency').focus();
+            return;
+          }
+
+          const next = new URL('ussd.html', window.location.href);
+          next.searchParams.set('amount', amount);
+          window.location.href = next.toString();
+          return;
+        }
+
+        /* Card / Flutterwave route */
+        if (givingMethod === 'card') {
+          e.preventDefault();
+
+          try {
+            await ensureFlutterwavePublicKey();
+          } catch (error) {
+            alert(error.message || 'Card payments are not configured.');
+            return;
+          }
+
+          setSubmitState(true);
+
+          try {
+            await loadFlutterwave();
+          } catch (error) {
+            setSubmitState(false);
+            alert('The secure payment window could not load. Please check your internet connection and try again.');
+            return;
+          }
+
+          const modal = FlutterwaveCheckout({
+            public_key: FLUTTERWAVE_PUBLIC_KEY,
+            tx_ref: makeTransactionReference(),
+            amount: Number(amount),
+            currency: currency,
+            payment_options: 'card',
+            customer: {
+              email: email,
+              phone_number: phone
+            },
+            meta: {
+              offering_type: offeringType,
+              donor_title: title,
+              gender: genderRaw.value,
+              country: document.getElementById('country').value,
+              state: document.getElementById('state').value,
+              city: document.getElementById('city').value
+            },
+            customizations: {
+              title: 'Kingdom Witness Global Ministries',
+              description: offeringType || 'Ministry Giving'
+            },
+            callback: async function (payment) {
+              if (!payment || payment.status !== 'successful') {
+                setSubmitState(false);
+                return;
+              }
+
+              try {
+                const verifyResponse = await fetch(`${KWGM_API_BASE}/payments/flutterwave/verify`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    transaction_id: payment.transaction_id || payment.id,
+                    expected_amount: Number(amount),
+                    currency: currency
+                  })
+                });
+                const verifyData = await verifyResponse.json();
+                if (!verifyResponse.ok || !verifyData.ok) {
+                  throw new Error(verifyData.error || 'Payment verification failed.');
+                }
+                modal.close();
+                alert(`Payment verified successfully. Receipt: ${verifyData.payment.receipt_no}`);
+              } catch (error) {
+                alert(error.message || 'Payment was received but could not yet be verified. Please contact support with your transaction reference.');
+              } finally {
+                setSubmitState(false);
+              }
+            },
+            onclose: function () {
+              setSubmitState(false);
+            }
+          });
+
+          return;
+        }
+
+        /*
+          Other giving methods keep their existing behavior for now.
+          Prevent the static form from posting to "#" accidentally.
+        */
+        e.preventDefault();
+      });
+    }
+
+    /* Mobile Drawer Script */
+    const menuTrigger = document.getElementById('menuTrigger');
+    const navDrawer = document.getElementById('navDrawer');
+    const navBackdrop = document.getElementById('navBackdrop');
+
+    if (menuTrigger && navDrawer && navBackdrop) {
+      function toggleMenu() {
+        const isActive = menuTrigger.classList.toggle('is-active');
+        navDrawer.classList.toggle('is-active', isActive);
+        navBackdrop.classList.toggle('is-active', isActive);
+        document.body.style.overflow = isActive ? 'hidden' : '';
+      }
+
+      function closeMenu() {
+        menuTrigger.classList.remove('is-active');
+        navDrawer.classList.remove('is-active');
+        navBackdrop.classList.remove('is-active');
+        document.body.style.overflow = '';
+      }
+
+      menuTrigger.addEventListener('click', toggleMenu);
+      navBackdrop.addEventListener('click', closeMenu);
+
+      document.querySelectorAll('.overlay-links a').forEach(link => {
+        link.addEventListener('click', closeMenu);
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeMenu();
+      });
+    }
+  </script>
+
+
+  <script type="module">
+    import { Country, State, City } from "https://esm.sh/country-state-city@3.2.1";
+
+    const countrySelect = document.getElementById('country');
+    const stateSelect = document.getElementById('state');
+    const citySelect = document.getElementById('city');
+
+    function resetSelect(select, label, disabled = true) {
+      select.innerHTML = '';
+      const option = document.createElement('option');
+      option.value = '';
+      option.textContent = label;
+      option.disabled = true;
+      option.selected = true;
+      select.appendChild(option);
+      select.disabled = disabled;
+    }
+
+    function addOption(select, value, label, data = {}) {
+      const option = document.createElement('option');
+      option.value = value;
+      option.textContent = label;
+      for (const [key, val] of Object.entries(data)) {
+        option.dataset[key] = val;
+      }
+      select.appendChild(option);
+    }
+
+    function populateCountries() {
+      const countries = Country.getAllCountries()
+        .slice()
+        .sort((a, b) => a.name.localeCompare(b.name));
+
+      resetSelect(countrySelect, 'Select country', false);
+
+      countries.forEach(country => {
+        addOption(countrySelect, country.name, country.name, {
+          iso: country.isoCode
+        });
+      });
+    }
+
+    countrySelect.addEventListener('change', () => {
+      const countryOption = countrySelect.options[countrySelect.selectedIndex];
+      const countryCode = countryOption.dataset.iso;
+
+      resetSelect(stateSelect, 'Loading states / regions...', true);
+      resetSelect(citySelect, 'Select state first', true);
+      stateSelect.classList.add('is-loading');
+
+      const states = State.getStatesOfCountry(countryCode)
+        .slice()
+        .sort((a, b) => a.name.localeCompare(b.name));
+
+      stateSelect.classList.remove('is-loading');
+
+      if (!states.length) {
+        resetSelect(stateSelect, 'No state / region required', false);
+        addOption(stateSelect, 'Not applicable', 'Not applicable', { iso: '' });
+        stateSelect.value = 'Not applicable';
+
+        const cities = City.getCitiesOfCountry(countryCode)
+          .slice()
+          .sort((a, b) => a.name.localeCompare(b.name));
+
+        resetSelect(
+          citySelect,
+          cities.length ? 'Select town / city' : 'No city data available',
+          !cities.length
+        );
+
+        cities.forEach(city => addOption(citySelect, city.name, city.name));
+
+        if (!cities.length) {
+          addOption(citySelect, 'Other', 'Other');
+          citySelect.disabled = false;
+          citySelect.value = 'Other';
+        }
+        return;
+      }
+
+      resetSelect(stateSelect, 'Select state / province / region', false);
+
+      states.forEach(state => {
+        addOption(stateSelect, state.name, state.name, {
+          iso: state.isoCode,
+          countryIso: countryCode
+        });
+      });
+    });
+
+    stateSelect.addEventListener('change', () => {
+      const countryOption = countrySelect.options[countrySelect.selectedIndex];
+      const stateOption = stateSelect.options[stateSelect.selectedIndex];
+
+      const countryCode = countryOption.dataset.iso;
+      const stateCode = stateOption.dataset.iso || '';
+
+      resetSelect(citySelect, 'Loading towns / cities...', true);
+      citySelect.classList.add('is-loading');
+
+      let cities = stateCode
+        ? City.getCitiesOfState(countryCode, stateCode)
+        : City.getCitiesOfCountry(countryCode);
+
+      cities = cities
+        .slice()
+        .sort((a, b) => a.name.localeCompare(b.name));
+
+      citySelect.classList.remove('is-loading');
+
+      if (!cities.length) {
+        resetSelect(citySelect, 'No city data available', false);
+        addOption(citySelect, 'Other', 'Other');
+        citySelect.value = 'Other';
+        return;
+      }
+
+      resetSelect(citySelect, 'Select town / city', false);
+      cities.forEach(city => addOption(citySelect, city.name, city.name));
+    });
+
+    try {
+      populateCountries();
+    } catch (error) {
+      console.error('Worldwide location data failed to load:', error);
+      resetSelect(countrySelect, 'Unable to load countries', true);
+      resetSelect(stateSelect, 'Unavailable', true);
+      resetSelect(citySelect, 'Unavailable', true);
+    }
+  </script>
+
+  <script src="assets/js/pwa.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "name": "Kingdom Witness Global Ministries",
+  "short_name": "KWGM",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0d0101",
+  "theme_color": "#0d0101",
+  "description": "Kingdom Witness Global Ministries \u2014 messages, Bible resources, giving and contact.",
+  "icons": [
+    {
+      "src": "assets/images/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/images/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

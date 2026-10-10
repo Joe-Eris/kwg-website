@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="description" content="Kingdom Witness Global Ministries — apostolic teaching, ministry resources, Bible engagement, giving and contact information.">
+  <meta name="theme-color" content="#0d0101">
+  <meta name="color-scheme" content="dark">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Kingdom Witness Global Ministries">
+  <meta property="og:description" content="Kingdom Witness Global Ministries — apostolic teaching, ministry resources, Bible engagement, giving and contact information.">
+  <meta property="og:image" content="assets/images/logo.png">
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+
+  <title>Kingdom Witness Global Ministries - Home</title>
+  
+  <!-- Font Awesome Vector Asset Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  
+  <!-- Google Fonts Connection Framework -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Shared Global Layout Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <style>
+    /* ==========================================================================
+       HOME PAGE CUSTOM STYLES
+       ========================================================================== */
+
+    /* Master Layout Container */
+    .content-container-stack {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 110px 20px 60px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 4rem;
+      z-index: 1;
+      width: 100%;
+    }
+
+    /* Hero Banner Image Block */
+    .hero-banner-card {
+      position: relative;
+      width: 100%;
+      height: 500px;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow);
+      background: radial-gradient(circle at center, #2e0808 0%, #0d0101 100%);
+    }
+
+    .hero-banner-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transition: transform 0.8s ease;
+    }
+
+    .hero-banner-card .hero-tint-overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(transparent 30%, rgba(13, 1, 1, 0.7) 70%, rgba(13, 1, 1, 0.98) 100%);
+    }
+
+    .hero-banner-card:hover img {
+      transform: scale(1.02);
+    }
+
+    .hero-text-floating {
+      position: absolute;
+      bottom: 50px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      padding: 0 30px;
+    }
+
+    .hero-text-floating h1 {
+      font-size: 40px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: white;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.35);
+      margin-bottom: 10px;
+    }
+
+    .hero-text-floating p {
+      font-size: 14px;
+      color: #d1d1d1;
+      font-weight: 600;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+    }
+
+    /* Text Quote Fading Carousel */
+    .carousel-viewframe {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .carousel-slide-node {
+      font-size: 20px;
+      font-style: italic;
+      line-height: 1.6;
+      color: #f3f4f6;
+      max-width: 800px;
+      animation: crossFadeCycle 12s infinite ease-in-out;
+      position: absolute;
+      opacity: 0;
+      text-align: center;
+    }
+
+    .quote-1 { animation-delay: 0s; }
+    .quote-2 { animation-delay: 4s; }
+    .quote-3 { animation-delay: 8s; }
+
+    @keyframes crossFadeCycle {
+      0%, 22% { opacity: 0; transform: translateY(12px); }
+      27%, 55% { opacity: 1; transform: translateY(0); }
+      60%, 100% { opacity: 0; transform: translateY(-12px); }
+    }
+
+    .carousel-slide-node span {
+      display: block;
+      margin-top: 14px;
+      font-size: 13px;
+      font-style: normal;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent-red);
+      text-shadow: 0 0 10px rgba(255, 51, 51, 0.3);
+    }
+
+    /* Scrolling Bible Verse Tape */
+    .scrolling-verse-tape {
+      width: 100vw;
+      position: relative;
+      left: 50%;
+      right: 50%;
+      margin-left: -50vw;
+      margin-right: -50vw;
+      background: rgba(13, 1, 1, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid var(--glass-border);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 16px 0;
+      overflow: hidden;
+    }
+
+    .marquee-stream-track {
+      display: flex;
+      width: max-content;
+      gap: 60px;
+      animation: continuousMarquee 35s linear infinite;
+    }
+
+    .marquee-stream-track:hover {
+      animation-play-state: paused;
+    }
+
+    .verse-token-item {
+      font-size: 16px;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+      color: #e5e7eb;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .verse-token-item i {
+      color: var(--accent-red);
+      font-size: 8px;
+      text-shadow: 0 0 8px var(--accent-red);
+    }
+
+    .verse-token-item span {
+      color: var(--accent-red);
+      font-weight: 600;
+    }
+
+    @keyframes continuousMarquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Bible App Download Panel styling is in style.css */
+
+    /* YouTube Theater Grid Layout */
+    .youtube-grid-theater {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      width: 100%;
+      margin-top: 5px;
+    }
+
+    .video-display-node {
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--glass-border);
+      aspect-ratio: 16 / 9;
+      background: rgba(0, 0, 0, 0.4);
+      box-shadow: var(--glass-shadow);
+      transition: border-color 0.3s ease;
+      position: relative;
+    }
+
+    .video-display-node iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .video-display-node:hover {
+      border-color: var(--glass-border-hover);
+    }
+
+    @media (min-width: 768px) {
+      .youtube-grid-theater {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .panel-heading-label {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      color: white;
+    }
+
+    .panel-sub-label {
+      font-size: 15px;
+      color: #9ca3af;
+      margin-bottom: 30px;
+    }
+
+    @media (max-width: 768px) {
+      .hero-banner-card {
+        height: 380px;
+      }
+      .hero-text-floating h1 {
+        font-size: 28px;
+      }
+      .hero-text-floating p {
+        font-size: 12px;
+        letter-spacing: 2px;
+      }
+      .content-container-stack {
+        padding-top: 90px;
+        gap: 2.5rem;
+      }
+    }
+  </style>
+  <link rel="manifest" href="manifest.webmanifest">
+  <script src="assets/js/config.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <!-- Background Orbs Layer -->
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+  <div class="bg-orb orb-3"></div>
+
+  <!-- Noise Film Grain Sheet -->
+  <div class="noise-overlay"></div>
+
+  <!-- Master Navigation Header (Desktop Centered Glass Pill + Responsive Mobile Trigger) -->
+  <header class="master-header-nav" role="banner">
+    <div class="nav-container-inner">
+      <!-- Left: Top Brand Floating Logo -->
+      <div class="nav-brand-logo">
+        <a href="index.html" aria-label="Kingdom Witness Global Home">
+          <img src="assets/images/logo.png" alt="Kingdom Witness Global Ministries" decoding="async">
+        </a>
+      </div>
+
+      <!-- Center: Circular Long Glassmorphism Navigation Menu (Laptop/Desktop) -->
+      <nav class="nav-center-pill" aria-label="Main Navigation">
+        <a href="index.html" class="nav-pill-item active">Home</a>
+        <a href="about.html" class="nav-pill-item">About</a>
+        <a href="contact.html" class="nav-pill-item">Contact</a>
+        <a href="funds.html" class="nav-pill-item">Give</a>
+        <a href="#bible-section" class="nav-pill-item nav-bible-pill" title="Holy Bible"><i class="fa-solid fa-book-bible"></i> Bible</a>
+      </nav>
+
+      <!-- Right: Action CTA & Mobile Navigation Trigger -->
+      <div class="nav-right-actions">
+        <!-- Desktop Giving Action Link -->
+        <a href="funds.html" class="nav-desktop-giving-btn">
+          <i class="fa-solid fa-heart" style="color: var(--accent-red); font-size: 12px;"></i> Giving
+        </a>
+
+        <!-- Circular Mobile Navigation Button (Hidden on laptop/desktop, shown on mobile) -->
+        <button class="circular-menu-btn" id="menuTrigger" aria-label="Toggle Navigation Window" type="button">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Backdrop Dimmer Overlay -->
+  <div class="nav-backdrop" id="navBackdrop"></div>
+
+  <!-- Slide-Out Overlay Drawer Panel for Mobile -->
+  <aside class="nav-overlay-panel" id="navDrawer" aria-label="Site Navigation Drawer">
+    <div style="margin-bottom: 30px;">
+      <a href="index.html">
+        <img src="assets/images/logo.png" alt="Kingdom Witness Global Logo" style="height: 44px; display: block;" decoding="async">
+      </a>
+    </div>
+    <nav class="overlay-navbar">
+      <ul class="overlay-links">
+        <li><a href="index.html" style="color: var(--accent-red);"><i class="fa-solid fa-house"></i> Home</a></li>
+        <li><a href="about.html"><i class="fa-solid fa-church"></i> About</a></li>
+        <li><a href="contact.html"><i class="fa-solid fa-envelope"></i> Contact</a></li>
+        <li><a href="funds.html"><i class="fa-solid fa-hand-holding-dollar"></i> Give</a></li>
+        <li><a href="#bible-section"><i class="fa-solid fa-book-bible"></i> Bible</a></li>
+      </ul>
+      <a href="funds.html" class="glass-btn" style="text-decoration: none; text-align: center; margin-top: 30px; width: 100%; max-width: 100%; display: block;">
+        Giving & Support
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Master Layout Vertical Content Stack -->
+  <main id="main-content" class="content-container-stack animate-fade-in-down">
+
+    <!-- Section 1: Hero Banner Image & Low-Opacity Dark Overlay Mask -->
+    <section class="hero-banner-card">
+      <img src="assets/images/hero-worship.webp" alt="Kingdom Witness Global Gathering Backdrop" decoding="async" fetchpriority="high">
+      <div class="hero-tint-overlay"></div>
+      <div class="hero-text-floating">
+        <h1>Kingdom Witness Global Ministries</h1>
+        <p>Apostolic Devotion & Prophetic Mandate</p>
+      </div>
+    </section>
+
+    <!-- Section 2: Text Quote Fading Carousel Panel -->
+    <section class="glass-panel">
+      <div class="carousel-viewframe">
+        <blockquote class="carousel-slide-node quote-1">
+          "The mandate is straightforward: to raise an uncompromised generation that serves as a physical witness of structural prophetic dominion."
+          <span>— Operational Mandate Core</span>
+        </blockquote>
+        <blockquote class="carousel-slide-node quote-2">
+          "Faith is not an abstract concept; it is the definitive spiritual asset framework through which we command dark terrains into total subjection."
+          <span>— Apostolic Commentary</span>
+        </blockquote>
+        <blockquote class="carousel-slide-node quote-3">
+          "We do not retreat from global systems. We occupy, build, and re-structure until the frameworks of history align with the decree of heaven."
+          <span>— Prophetic Proclamation</span>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- Section 3: Infinite Horizontal Tape / Scrolling Bible Verses -->
+    <div class="scrolling-verse-tape">
+      <div class="marquee-stream-track">
+        <div class="verse-token-item"><i class="fa-solid fa-circle"></i> "The kingdoms of this world are become the kingdoms of our Lord, and of his Christ." <span>— Rev 11:15</span></div>
+        <div class="verse-token-item"><i class="fa-solid fa-circle"></i> "Arise, shine; for thy light is come, and the glory of the Lord is risen upon thee." <span>— Isa 60:1</span></div>
+        <div class="verse-token-item"><i class="fa-solid fa-circle"></i> "For we walk by faith, not by sight." <span>— 2 Cor 5:7</span></div>
+        <div class="verse-token-item"><i class="fa-solid fa-circle"></i> "Now faith is the substance of things hoped for, the evidence of things not seen." <span>— Heb 11:1</span></div>
+        <!-- Repeated items for seamless infinite loop flow connection -->
+        <div class="verse-token-item"><i class="fa-solid fa-circle"></i> "The kingdoms of this world are become the kingdoms of our Lord, and of his Christ." <span>— Rev 11:15</span></div>
+        <div class="verse-token-item"><i class="fa-solid fa-circle"></i> "Arise, shine; for thy light is come, and the glory of the Lord is risen upon thee." <span>— Isa 60:1</span></div>
+        <div class="verse-token-item"><i class="fa-solid fa-circle"></i> "For we walk by faith, not by sight." <span>— 2 Cor 5:7</span></div>
+        <div class="verse-token-item"><i class="fa-solid fa-circle"></i> "Now faith is the substance of things hoped for, the evidence of things not seen." <span>— Heb 11:1</span></div>
+      </div>
+    </div>
+
+    <!-- Section 4: Bible Application Download Gate Panel with White Bible (Hovers Red) -->
+    <section class="glass-panel bible-download-panel" id="bible-section">
+      <div class="bible-card-content">
+        <!-- Interactive White Bible Showcase (Hovers Red) -->
+        <div class="bible-image-showcase">
+          <div class="bible-image-frame" tabindex="0" role="img" aria-label="White Holy Bible with red hover illumination">
+            <img src="assets/images/white-bible.webp" alt="White Holy Bible" class="white-bible-img" id="bibleInteractiveImage" decoding="async" loading="lazy">
+            <div class="bible-glow-pulse" aria-hidden="true"></div>
+            <div class="bible-hover-badge" aria-hidden="true">
+              <i class="fa-solid fa-cross"></i> Holy Scripture
+            </div>
+          </div>
+        </div>
+
+        <!-- Bible App Download Text & Actions -->
+        <div class="bible-info-content">
+          <div class="bible-badge-tag"><i class="fa-solid fa-book-bible"></i> Scripture Engagement</div>
+          <h2 class="panel-heading-label">Carry The Word With You</h2>
+          <p class="panel-sub-label">Experience Scripture like never before and enjoy regular time with the Bible, right when and where you need it.</p>
+          
+          <div class="bible-features-list">
+            <span class="bible-feature-pill"><i class="fa-solid fa-check"></i> 1,000+ Translations</span>
+            <span class="bible-feature-pill"><i class="fa-solid fa-check"></i> Audio Scriptures</span>
+            <span class="bible-feature-pill"><i class="fa-solid fa-check"></i> Offline Access</span>
+          </div>
+
+          <div class="app-store-badges">
+            <a href="https://www.bible.com/app" target="_blank" rel="noopener noreferrer" class="glass-btn-app" aria-label="Download Bible App for iPhone and iPad">
+              <span class="store-icon-wrap"><i class="fa-brands fa-apple"></i></span>
+              <span class="store-copy">
+                <span class="store-kicker">Download on the</span>
+                <strong class="store-name">App Store</strong>
+              </span>
+              <i class="fa-solid fa-arrow-up-right-from-square store-arrow" aria-hidden="true"></i>
+            </a>
+            <a href="https://www.bible.com/app" target="_blank" rel="noopener noreferrer" class="glass-btn-app" aria-label="Get Bible App on Google Play">
+              <span class="store-icon-wrap"><i class="fa-brands fa-google-play"></i></span>
+              <span class="store-copy">
+                <span class="store-kicker">Get it on</span>
+                <strong class="store-name">Google Play</strong>
+              </span>
+              <i class="fa-solid fa-arrow-up-right-from-square store-arrow" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: Dedicated Messages Page -->
+    <section class="glass-panel" style="text-align:center;">
+      <div class="bible-badge-tag"><i class="fa-solid fa-circle-play"></i> Ministry Messages</div>
+      <h2 class="panel-heading-label">Watch The Latest Messages</h2>
+      <p class="panel-sub-label">Videos now open on a dedicated, mobile-friendly Messages page for faster loading and PWA access.</p>
+      <a href="videos.html" class="glass-btn" style="display:inline-flex;text-decoration:none;align-items:center;justify-content:center;gap:9px;max-width:280px;">
+        <i class="fa-solid fa-circle-play"></i> Open Messages
+      </a>
+    </section>
+
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-logo">
+        <img src="assets/images/logo.png" alt="Kingdom Witness Global Logo" decoding="async">
+      </div>
+      <div class="footer-socials">
+        <a href="tel:+2347037412480" class="social-icon" aria-label="Call ministry support"><i class="fa-solid fa-phone"></i></a>
+        <a href="https://wa.me/2347037412480" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="WhatsApp ministry support"><i class="fa-brands fa-whatsapp"></i></a>
+        <a href="mailto:support@kwgmministries.org" class="social-icon" aria-label="Email ministry support"><i class="fa-solid fa-envelope"></i></a>
+      </div>
+      <div class="footer-copyright">
+        <p>&copy; 2026 Kingdom Witness Global Ministries. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+  <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/pwa.js" defer></script>
+</body>
+</html>

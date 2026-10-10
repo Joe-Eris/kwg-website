@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="description" content="Choose your Nigerian bank and generate the USSD giving code using the amount from the giving form.">
+  <meta name="theme-color" content="#0d0101">
+  <meta name="color-scheme" content="dark">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Kingdom Witness Global Ministries">
+  <meta property="og:description" content="Choose your Nigerian bank and generate the USSD giving code using the amount from the giving form.">
+  <meta property="og:image" content="assets/images/logo.png">
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+
+  <title>USSD Giving - Kingdom Witness Global Ministries</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <style>
+    .ussd-page-shell {
+      max-width: 760px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 110px 20px 60px;
+      flex: 1;
+      position: relative;
+      z-index: 1;
+    }
+
+    .back-action-row {
+      margin-bottom: 25px;
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    .back-nav-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      color: #d1d1d1;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
+      transition: all 0.3s ease;
+    }
+
+    .back-nav-btn:hover {
+      color: white;
+      border-color: var(--glass-border-hover);
+      background: rgba(255, 255, 255, 0.08);
+      transform: translateX(-2px);
+    }
+
+    .ussd-panel {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid var(--glass-border);
+      border-radius: 18px;
+      box-shadow: var(--glass-shadow);
+      padding: 38px 30px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ussd-panel::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    }
+
+    .page-kicker {
+      color: var(--accent-red);
+      text-transform: uppercase;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .ussd-panel h1 {
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    .ussd-lead {
+      color: #aeb0b5;
+      line-height: 1.65;
+      margin-bottom: 30px;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #d1d1d1;
+      margin-bottom: 8px;
+      letter-spacing: 0.4px;
+    }
+
+    .bank-select {
+      width: 100%;
+      padding: 15px 16px;
+      color: white;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      outline: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 15px;
+      margin-bottom: 24px;
+    }
+
+    .bank-select:focus {
+      border-color: rgba(255,255,255,0.3);
+      box-shadow: 0 0 0 4px rgba(255,0,0,0.1);
+    }
+
+    .bank-select option {
+      background: #0d0101;
+      color: white;
+    }
+
+    .ussd-screen {
+      background: #050505;
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+      margin-bottom: 20px;
+    }
+
+    .screen-topline {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      align-items: center;
+      margin-bottom: 18px;
+      color: #8f9298;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .amount-chip {
+      color: white;
+      background: rgba(255, 51, 51, 0.12);
+      border: 1px solid rgba(255, 51, 51, 0.25);
+      border-radius: 9999px;
+      padding: 5px 10px;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    .ussd-code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(20px, 4vw, 30px);
+      font-weight: 700;
+      line-height: 1.45;
+      word-break: break-all;
+      color: white;
+      margin-bottom: 18px;
+    }
+
+    .account-line {
+      color: #c9c9c9;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .account-line strong {
+      color: white;
+    }
+
+    .action-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .ussd-action-btn {
+      min-height: 48px;
+      border-radius: 10px;
+      border: 1px solid var(--glass-border);
+      background: rgba(255,255,255,0.04);
+      color: white;
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      transition: all 0.3s ease;
+    }
+
+    .ussd-action-btn:hover {
+      border-color: var(--glass-border-hover);
+      background: rgba(255,255,255,0.09);
+      transform: translateY(-1px);
+    }
+
+    .dial-btn {
+      background: rgba(255, 51, 51, 0.16);
+      border-color: rgba(255, 51, 51, 0.4);
+    }
+
+    .dial-btn:hover {
+      background: var(--accent-red);
+      border-color: var(--accent-red);
+      box-shadow: 0 0 24px rgba(255, 51, 51, 0.35);
+    }
+
+
+    .transfer-format-note {
+      min-height: 18px;
+      margin-top: -8px;
+      margin-bottom: 18px;
+      color: #8f9298;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .ussd-action-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    .status-message {
+      min-height: 20px;
+      margin-top: 12px;
+      text-align: center;
+      font-size: 12px;
+      color: #9ca3af;
+    }
+
+    .ussd-note {
+      margin-top: 22px;
+      color: #8f9298;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    @media (min-width: 620px) {
+      .action-row {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .ussd-page-shell {
+        padding-top: 95px;
+      }
+
+      .ussd-panel {
+        padding: 30px 20px;
+      }
+
+      .ussd-panel h1 {
+        font-size: 25px;
+      }
+
+      .ussd-screen {
+        padding: 20px 16px;
+      }
+    }
+  
+    /* Searchable red glass bank selector */
+    .bank-picker{position:relative;width:100%;margin-bottom:24px;z-index:30}
+    .bank-select-hidden{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}
+    .bank-picker-trigger{width:100%;min-height:52px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;color:#fff;background:linear-gradient(135deg,rgba(255,51,51,.14),rgba(255,255,255,.025)),rgba(13,1,1,.78);border:1px solid rgba(255,51,51,.42);border-radius:11px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:500;cursor:pointer;text-align:left;box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 22px rgba(0,0,0,.28)}
+    .bank-picker-trigger:hover,.bank-picker-trigger:focus-visible,.bank-picker.is-open .bank-picker-trigger{outline:none;border-color:rgba(255,51,51,.78);box-shadow:0 0 0 4px rgba(255,51,51,.08),0 10px 26px rgba(0,0,0,.38),0 0 22px rgba(255,51,51,.14)}
+    .bank-picker-chevron{color:var(--accent-red);font-size:12px;transition:transform .25s ease}.bank-picker.is-open .bank-picker-chevron{transform:rotate(180deg)}
+    .bank-picker-menu{position:absolute;top:calc(100% + 9px);left:0;right:0;padding:10px;background:rgba(18,2,2,.97);border:1px solid rgba(255,51,51,.42);border-radius:14px;box-shadow:0 20px 50px rgba(0,0,0,.72),0 0 30px rgba(255,51,51,.1);backdrop-filter:blur(24px) saturate(170%);overflow:hidden}
+    .bank-search-wrap{position:relative;display:flex;align-items:center;margin-bottom:9px}.bank-search-wrap>i{position:absolute;left:14px;color:var(--accent-red);font-size:13px}.bank-search-input{width:100%;min-height:44px;padding:11px 14px 11px 38px;border-radius:9px;border:1px solid rgba(255,51,51,.28);background:rgba(0,0,0,.4);color:#fff;font-family:'Outfit',sans-serif;font-size:14px;outline:none}
+    .bank-options-scroll{max-height:240px;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:rgba(255,51,51,.68) rgba(255,255,255,.035);border-radius:9px;scroll-behavior:smooth}
+    .bank-options-scroll::-webkit-scrollbar{width:7px}.bank-options-scroll::-webkit-scrollbar-track{background:rgba(255,255,255,.03);border-radius:999px}.bank-options-scroll::-webkit-scrollbar-thumb{background:linear-gradient(var(--accent-red),rgba(170,10,10,.9));border-radius:999px}
+    .bank-group-label{padding:10px 12px 6px;color:var(--accent-red);font-size:10.5px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;position:sticky;top:0;background:rgba(18,2,2,.97);z-index:2}
+    .bank-option{width:100%;height:48px;padding:0 12px;border:0;border-bottom:1px solid rgba(255,255,255,.045);background:transparent;color:#e7e7e7;display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:500;cursor:pointer;text-align:left}
+    .bank-option:hover,.bank-option:focus-visible,.bank-option.is-selected{outline:none;color:#fff;background:rgba(255,51,51,.14)}.bank-option i{color:rgba(255,51,51,.78);font-size:10px}.bank-no-results{padding:20px 12px;text-align:center;color:#8f9298;font-size:13px}
+    @media(max-width:520px){.bank-options-scroll{max-height:225px}.bank-option{height:45px;font-size:13.5px}.bank-picker-trigger{min-height:50px}.bank-picker-menu{padding:9px;border-radius:12px}}
+
+</style>
+  <link rel="manifest" href="manifest.webmanifest">
+  <script src="assets/js/config.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+  <div class="bg-orb orb-3"></div>
+  <div class="noise-overlay"></div>
+
+  <header class="master-header-nav" role="banner">
+    <div class="nav-container-inner">
+      <div class="nav-brand-logo">
+        <a href="index.html" aria-label="Kingdom Witness Global Home">
+          <img src="assets/images/logo.png" alt="Kingdom Witness Global Ministries" decoding="async">
+        </a>
+      </div>
+
+      <nav class="nav-center-pill" aria-label="Main Navigation">
+        <a href="index.html" class="nav-pill-item">Home</a>
+        <a href="about.html" class="nav-pill-item">About</a>
+        <a href="videos.html" class="nav-pill-item">Messages</a>
+        <a href="contact.html" class="nav-pill-item">Contact</a>
+        <a href="funds.html" class="nav-pill-item active">Give</a>
+        <a href="index.html#bible-section" class="nav-pill-item nav-bible-pill" title="Holy Bible">
+          <i class="fa-solid fa-book-bible"></i> Bible
+        </a>
+      </nav>
+
+      <div class="nav-right-actions">
+        <a href="funds.html" class="nav-desktop-giving-btn">
+          <i class="fa-solid fa-heart" style="color: var(--accent-red); font-size: 12px;"></i> Giving
+        </a>
+
+        <button class="circular-menu-btn" id="menuTrigger" aria-label="Toggle Navigation Window" type="button">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="nav-backdrop" id="navBackdrop"></div>
+
+  <aside class="nav-overlay-panel" id="navDrawer" aria-label="Site Navigation Drawer">
+    <div style="margin-bottom: 30px;">
+      <a href="index.html">
+        <img src="assets/images/logo.png" alt="Kingdom Witness Global Logo" style="height: 44px; display: block;" decoding="async">
+      </a>
+    </div>
+    <nav class="overlay-navbar">
+      <ul class="overlay-links">
+        <li><a href="index.html"><i class="fa-solid fa-house"></i> Home</a></li>
+        <li><a href="about.html"><i class="fa-solid fa-church"></i> About</a></li>
+        <li><a href="videos.html"><i class="fa-solid fa-circle-play"></i> Messages</a></li>
+        <li><a href="contact.html"><i class="fa-solid fa-envelope"></i> Contact</a></li>
+        <li><a href="funds.html" style="color: var(--accent-red);"><i class="fa-solid fa-hand-holding-dollar"></i> Funds</a></li>
+        <li><a href="index.html#bible-section"><i class="fa-solid fa-book-bible"></i> Bible</a></li>
+      </ul>
+      <a href="funds.html" class="glass-btn" style="text-decoration: none; text-align: center; margin-top: 30px; width: 100%; max-width: 100%; display: block;">
+        Giving & Support
+      </a>
+    </nav>
+  </aside>
+
+  <main id="main-content" class="ussd-page-shell">
+    <div class="back-action-row">
+      <a href="form.html?method=ussd" class="back-nav-btn" aria-label="Back to giving form" title="Back">
+        <i class="fa-solid fa-arrow-left"></i>
+      </a>
+    </div>
+
+    <section class="ussd-panel">
+      <div class="page-kicker">USSD Giving</div>
+      <h1>Choose Your Bank</h1>
+      <p class="ussd-lead">Select the bank you are sending from. The receiving account is our First Bank account, and your amount comes automatically from the giving form.</p>
+
+      <label for="bankSelect" class="field-label">Select bank</label>
+      
+      <div class="bank-picker" id="bankPicker">
+        <button type="button" class="bank-picker-trigger" id="bankPickerTrigger" aria-expanded="false">
+          <span id="bankPickerText">Select your bank</span>
+          <i class="fa-solid fa-chevron-down bank-picker-chevron"></i>
+        </button>
+        <div class="bank-picker-menu" id="bankPickerMenu" hidden>
+          <div class="bank-search-wrap">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="search" id="bankSearch" class="bank-search-input" placeholder="Search Nigerian banks..." autocomplete="off">
+          </div>
+          <div class="bank-options-scroll" id="bankOptionsScroll">
+            <div class="bank-group-label">Commercial Banks</div><button type="button" class="bank-option" data-value="access" data-label="access bank"><span>Access Bank</span><i class="fa-solid fa-chevron-right"></i></button><button type="button" class="bank-option" data-value="alphamorgan" data-label="alpha morgan bank"><span>Alpha Morgan Bank</span><i class="fa-solid fa-chevron-right"></i></button><button type="button" class="bank-option" data-value="citibank" data-label="citibank nigeria"><span>Citibank Nigeria</span><i class="fa-solid fa-chevron-right"></i></button><button type="button" class="bank-option" data-value="ecobank" data-label="ecobank nigeria"><span>Ecobank Nigeria</span><i class="fa-solid fa-chevron-right"></i></button><button type="button" class="bank-option" data-value="fidelity" data-label="fidelity bank"><span>Fidelity Bank</span><i class="fa-solid fa-chevron-right"></i></button><button type="button" class="bank-option" data-value="firstbank" data-label="first bank of nigeria"><span>First Bank of Nigeria</span><i class="fa-solid fa-chevron-right"></i></button><button type="button" class="bank-option" data-value="fcmb" data-label="first city monument bank (fcmb)"><span>First City Monument Bank (FCMB)</span><i class="fa-solid fa-chevron-right"></i></button><button type="button" class="bank-option" data-value="globus" data-label="globus bank"><span>Globus Bank</span><i class="fa-solid fa-chevron-right"></i></button><button type="button" class="bank-option" data-value="gtbank" data-label="guaranty trust bank (gtbank)"><span>Guaranty Trust Bank (GTBank)</span><i class="fa-solid fa-chevron-right"></i></button><button type="button" class="bank-option" data-value="keystone" data-label="keystone bank"><span>Keystone Bank</span><i class="fa-solid fa-chevron-right"></i></button><button type="button" class="bank-option" data-value="optimus" data-label="optimus bank"><span>Optimus Bank</span><i class="fa-solid fa-chevron-right"></i></button><button type="button" class="bank-option" data-value="parallex" data-label="parallex bank"><span>Parallex Bank</span><i class="fa-solid fa-chevron-right"></i></button><button type="button" class="bank-option" data-value="polaris" data-label="polaris bank"><span>Polaris Bank</span><i class="fa-solid fa-chevron-right"></i></button><button type="button" class="bank-option" data-value="premiumtrust" data-label="premiumtrust bank"><span>PremiumTrust Bank</span><i class="fa-solid fa-chevron-right"></i></button><button type="button" class="bank-option" data-value="providus" data-label="providusbank"><span>ProvidusBank</span><i class="fa-solid fa-chevron-right"></i></button><button type="button" class="bank-option" data-value="signature" data-label="signature bank"><span>Signature Bank</span><i class="fa-solid fa-chevron-right"></i></button><button type="button" class="bank-option" data-value="stanbic" data-label="stanbic ibtc bank"><span>Stanbic IBTC Bank</span><i class="fa-solid fa-chevron-right"></i></button><button type="button" class="bank-option" data-value="standardchartered" data-label="standard chartered bank nigeria"><span>Standard Chartered Bank Nigeria</span><i class="fa-solid fa-chevron-right"></i></button><button type="button" class="bank-option" data-value="sterling" data-label="sterling bank"><span>Sterling Bank</span><i class="fa-solid fa-chevron-right"></i></button><button type="button" class="bank-option" data-value="suntrust" data-label="suntrust bank"><span>SunTrust Bank</span><i class="fa-solid fa-chevron-right"></i></button><button type="button" class="bank-option" data-value="titan" data-label="titan trust bank"><span>Titan Trust Bank</span><i class="fa-solid fa-chevron-right"></i></button><button type="button" class="bank-option" data-value="uba" data-label="united bank for africa (uba)"><span>United Bank for Africa (UBA)</span><i class="fa-solid fa-chevron-right"></i></button><button type="button" class="bank-option" data-value="union" data-label="union bank of nigeria"><span>Union Bank of Nigeria</span><i class="fa-solid fa-chevron-right"></i></button><button type="button" class="bank-option" data-value="unity" data-label="unity bank"><span>Unity Bank</span><i class="fa-solid fa-chevron-right"></i></button><button type="button" class="bank-option" data-value="wema" data-label="wema bank / alat"><span>Wema Bank / ALAT</span><i class="fa-solid fa-chevron-right"></i></button><button type="button" class="bank-option" data-value="zenith" data-label="zenith bank"><span>Zenith Bank</span><i class="fa-solid fa-chevron-right"></i></button><div class="bank-group-label">Non-Interest Banks</div><button type="button" class="bank-option" data-value="alternative" data-label="the alternative bank"><span>The Alternative Bank</span><i class="fa-solid fa-chevron-right"></i></button><button type="button" class="bank-option" data-value="jaiz" data-label="jaiz bank"><span>Jaiz Bank</span><i class="fa-solid fa-chevron-right"></i></button><button type="button" class="bank-option" data-value="lotus" data-label="lotus bank"><span>Lotus Bank</span><i class="fa-solid fa-chevron-right"></i></button><button type="button" class="bank-option" data-value="summit" data-label="summit bank"><span>Summit Bank</span><i class="fa-solid fa-chevron-right"></i></button><button type="button" class="bank-option" data-value="taj" data-label="tajbank"><span>TAJBank</span><i class="fa-solid fa-chevron-right"></i></button>
+            <div class="bank-no-results" id="bankNoResults" hidden>No bank found.</div>
+          </div>
+        </div>
+      </div>
+      <select id="bankSelect" class="bank-select bank-select-hidden" tabindex="-1" aria-hidden="true">
+        <option value="" selected disabled>Select your bank</option>
+        <option value="access">Access Bank</option><option value="alphamorgan">Alpha Morgan Bank</option><option value="citibank">Citibank Nigeria</option><option value="ecobank">Ecobank Nigeria</option><option value="fidelity">Fidelity Bank</option><option value="firstbank">First Bank of Nigeria</option><option value="fcmb">First City Monument Bank (FCMB)</option><option value="globus">Globus Bank</option><option value="gtbank">Guaranty Trust Bank (GTBank)</option><option value="keystone">Keystone Bank</option><option value="optimus">Optimus Bank</option><option value="parallex">Parallex Bank</option><option value="polaris">Polaris Bank</option><option value="premiumtrust">PremiumTrust Bank</option><option value="providus">ProvidusBank</option><option value="signature">Signature Bank</option><option value="stanbic">Stanbic IBTC Bank</option><option value="standardchartered">Standard Chartered Bank Nigeria</option><option value="sterling">Sterling Bank</option><option value="suntrust">SunTrust Bank</option><option value="titan">Titan Trust Bank</option><option value="uba">United Bank for Africa (UBA)</option><option value="union">Union Bank of Nigeria</option><option value="unity">Unity Bank</option><option value="wema">Wema Bank / ALAT</option><option value="zenith">Zenith Bank</option><option value="alternative">The Alternative Bank</option><option value="jaiz">Jaiz Bank</option><option value="lotus">Lotus Bank</option><option value="summit">Summit Bank</option><option value="taj">TAJBank</option>
+      </select>
+
+      <div class="ussd-screen">
+        <div class="screen-topline">
+          <span id="selectedBankLabel">Select a bank</span>
+          <span class="amount-chip" id="amountChip">₦0</span>
+        </div>
+
+        <div class="ussd-code" id="ussdCode">—</div>
+        <div class="transfer-format-note" id="transferFormatNote"></div>
+
+        <div class="account-line">
+          Receiving Bank: <strong>First Bank of Nigeria</strong><br>
+          Account Number: <strong id="accountNumber">3217328064</strong><br>
+          Account Name: <strong>Kingdom Witness Global Ministries</strong>
+        </div>
+
+        <div class="action-row">
+          <button type="button" class="ussd-action-btn" id="copyCodeBtn">
+            <i class="fa-regular fa-copy"></i> Copy USSD Code
+          </button>
+
+          <button type="button" class="ussd-action-btn dial-btn" id="dialCodeBtn">
+            <i class="fa-solid fa-phone"></i> Open Phone App
+          </button>
+        </div>
+
+        <div class="status-message" id="statusMessage" aria-live="polite"></div>
+      </div>
+
+      <p class="ussd-note">
+        On a phone, “Open Phone App” launches the dialer. Some banks support a direct transfer string while others open their USSD menu first. Always confirm the receiving account name and amount before entering your PIN.
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-logo">
+        <img src="assets/images/logo.png" alt="Kingdom Witness Global Logo" decoding="async">
+      </div>
+      <div class="footer-socials">
+        <a href="tel:+2347037412480" class="social-icon" aria-label="Call ministry support"><i class="fa-solid fa-phone"></i></a>
+        <a href="https://wa.me/2347037412480" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="WhatsApp ministry support"><i class="fa-brands fa-whatsapp"></i></a>
+        <a href="mailto:support@kwgmministries.org" class="social-icon" aria-label="Email ministry support"><i class="fa-solid fa-envelope"></i></a>
+      </div>
+      <div class="footer-copyright">
+        <p>&copy; 2026 Kingdom Witness Global Ministries. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const ADMIN_ACCOUNT_NUMBER = '3217328064';
+    const ACCOUNT_NAME = 'Kingdom Witness Global Ministries';
+
+    /*
+      Exact format requested:
+      *BANK_USSD*AMOUNT_FROM_FORM*ADMIN_ACCOUNT_NUMBER#
+    */
+    const bankCodes = {
+      access: { name: 'Access Bank', code: '901' },
+      alphamorgan: { name: 'Alpha Morgan Bank', code: null },
+      citibank: { name: 'Citibank Nigeria', code: null },
+      ecobank: { name: 'Ecobank Nigeria', code: '326' },
+      fidelity: { name: 'Fidelity Bank', code: '770' },
+      firstbank: { name: 'First Bank of Nigeria', code: '894' },
+      fcmb: { name: 'First City Monument Bank (FCMB)', code: '329' },
+      globus: { name: 'Globus Bank', code: '989' },
+      gtbank: { name: 'Guaranty Trust Bank (GTBank)', code: '737' },
+      keystone: { name: 'Keystone Bank', code: '7111' },
+      optimus: { name: 'Optimus Bank', code: null },
+      parallex: { name: 'Parallex Bank', code: '1242' },
+      polaris: { name: 'Polaris Bank', code: '833' },
+      premiumtrust: { name: 'PremiumTrust Bank', code: '858' },
+      providus: { name: 'ProvidusBank', code: null },
+      signature: { name: 'Signature Bank', code: null },
+      stanbic: { name: 'Stanbic IBTC Bank', code: '909' },
+      standardchartered: { name: 'Standard Chartered Bank Nigeria', code: '977' },
+      sterling: { name: 'Sterling Bank', code: '822' },
+      suntrust: { name: 'SunTrust Bank', code: '5230' },
+      titan: { name: 'Titan Trust Bank', code: '922' },
+      uba: { name: 'United Bank for Africa (UBA)', code: '919' },
+      union: { name: 'Union Bank of Nigeria', code: '826' },
+      unity: { name: 'Unity Bank', code: '7799' },
+      wema: { name: 'Wema Bank / ALAT', code: '945' },
+      zenith: { name: 'Zenith Bank', code: '966' },
+
+      alternative: { name: 'The Alternative Bank', code: null },
+      jaiz: { name: 'Jaiz Bank', code: '773' },
+      lotus: { name: 'Lotus Bank', code: '5045' },
+      summit: { name: 'Summit Bank', code: null },
+      taj: { name: 'TAJBank', code: '898' }
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const amount = (params.get('amount') || '').replace(/\D/g, '');
+
+    const bankSelect = document.getElementById('bankSelect');
+    const selectedBankLabel = document.getElementById('selectedBankLabel');
+    const amountChip = document.getElementById('amountChip');
+    const ussdCode = document.getElementById('ussdCode');
+    const accountNumber = document.getElementById('accountNumber');
+    const transferFormatNote = document.getElementById('transferFormatNote');
+    const copyCodeBtn = document.getElementById('copyCodeBtn');
+    const dialCodeBtn = document.getElementById('dialCodeBtn');
+    const statusMessage = document.getElementById('statusMessage');
+
+    const bankPicker=document.getElementById('bankPicker');
+    const bankPickerTrigger=document.getElementById('bankPickerTrigger');
+    const bankPickerMenu=document.getElementById('bankPickerMenu');
+    const bankPickerText=document.getElementById('bankPickerText');
+    const bankSearch=document.getElementById('bankSearch');
+    const bankOptions=Array.from(document.querySelectorAll('.bank-option'));
+    const bankNoResults=document.getElementById('bankNoResults');
+
+    function filterBanks(q){
+      const needle=q.trim().toLowerCase(); let count=0;
+      bankOptions.forEach(o=>{const show=!needle||o.dataset.label.includes(needle);o.hidden=!show;if(show)count++;});
+      document.querySelectorAll('.bank-group-label').forEach(label=>{
+        let n=label.nextElementSibling, visible=false;
+        while(n&&!n.classList.contains('bank-group-label')){if(n.classList.contains('bank-option')&&!n.hidden){visible=true;break;}n=n.nextElementSibling;}
+        label.hidden=!visible;
+      });
+      bankNoResults.hidden=count!==0;
+    }
+    function openBankPicker(){bankPicker.classList.add('is-open');bankPickerMenu.hidden=false;bankPickerTrigger.setAttribute('aria-expanded','true');requestAnimationFrame(()=>bankSearch.focus());}
+    function closeBankPicker(){bankPicker.classList.remove('is-open');bankPickerMenu.hidden=true;bankPickerTrigger.setAttribute('aria-expanded','false');bankSearch.value='';filterBanks('');}
+    bankPickerTrigger.addEventListener('click',()=>bankPicker.classList.contains('is-open')?closeBankPicker():openBankPicker());
+    bankSearch.addEventListener('input',e=>filterBanks(e.target.value));
+    bankOptions.forEach(o=>o.addEventListener('click',()=>{bankSelect.value=o.dataset.value;bankPickerText.textContent=o.textContent.trim();bankOptions.forEach(x=>x.classList.remove('is-selected'));o.classList.add('is-selected');bankSelect.dispatchEvent(new Event('change',{bubbles:true}));closeBankPicker();}));
+    document.addEventListener('click',e=>{if(!bankPicker.contains(e.target)&&bankPicker.classList.contains('is-open'))closeBankPicker();});
+
+
+    accountNumber.textContent = ADMIN_ACCOUNT_NUMBER;
+
+    if (!amount) {
+      window.location.replace('form.html?method=ussd');
+    }
+
+    function buildCode() {
+      const bank = bankCodes[bankSelect.value];
+      if (!bank || !bank.code) return null;
+      return `*${bank.code}*${amount}*${ADMIN_ACCOUNT_NUMBER}#`;
+    }
+
+    function updateScreen() {
+      const bank = bankCodes[bankSelect.value];
+
+      amountChip.textContent = `₦${Number(amount || 0).toLocaleString('en-NG')}`;
+      statusMessage.textContent = '';
+
+      if (!bank) {
+        selectedBankLabel.textContent = 'Select a bank';
+        ussdCode.textContent = '—';
+        transferFormatNote.textContent =
+          'Choose your Nigerian bank to generate the USSD string.';
+        copyCodeBtn.disabled = true;
+        dialCodeBtn.disabled = true;
+        return;
+      }
+
+      const code = buildCode();
+      selectedBankLabel.textContent = bank.name;
+
+      if (!code) {
+        ussdCode.textContent = 'USSD unavailable';
+        transferFormatNote.textContent =
+          `A public consumer USSD code is not configured for ${bank.name}.`;
+        copyCodeBtn.disabled = true;
+        dialCodeBtn.disabled = true;
+        return;
+      }
+
+      ussdCode.textContent = code;
+      transferFormatNote.textContent =
+        `Generated from the amount you entered on the giving form: *bank USSD*amount*admin account number#`;
+      copyCodeBtn.disabled = false;
+      dialCodeBtn.disabled = false;
+    }
+
+    bankSelect.addEventListener('change', updateScreen);
+
+    copyCodeBtn.addEventListener('click', async () => {
+      const code = buildCode();
+      if (!code) return;
+
+      try {
+        await navigator.clipboard.writeText(code);
+        statusMessage.textContent = 'USSD code copied.';
+      } catch (error) {
+        const helper = document.createElement('textarea');
+        helper.value = code;
+        document.body.appendChild(helper);
+        helper.select();
+        document.execCommand('copy');
+        helper.remove();
+        statusMessage.textContent = 'USSD code copied.';
+      }
+    });
+
+    dialCodeBtn.addEventListener('click', () => {
+      const code = buildCode();
+      if (!code) return;
+
+      const dialString = encodeURIComponent(code)
+        .replace(/%2A/g, '*')
+        .replace(/%23/g, '%23');
+
+      window.location.href = `tel:${dialString}`;
+    });
+
+    updateScreen();
+
+    /* Mobile Drawer Script */
+    const menuTrigger = document.getElementById('menuTrigger');
+    const navDrawer = document.getElementById('navDrawer');
+    const navBackdrop = document.getElementById('navBackdrop');
+
+    if (menuTrigger && navDrawer && navBackdrop) {
+      function toggleMenu() {
+        const isActive = menuTrigger.classList.toggle('is-active');
+        navDrawer.classList.toggle('is-active', isActive);
+        navBackdrop.classList.toggle('is-active', isActive);
+        document.body.style.overflow = isActive ? 'hidden' : '';
+      }
+
+      function closeMenu() {
+        menuTrigger.classList.remove('is-active');
+        navDrawer.classList.remove('is-active');
+        navBackdrop.classList.remove('is-active');
+        document.body.style.overflow = '';
+      }
+
+      menuTrigger.addEventListener('click', toggleMenu);
+      navBackdrop.addEventListener('click', closeMenu);
+
+      document.querySelectorAll('.overlay-links a').forEach(link => {
+        link.addEventListener('click', closeMenu);
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeMenu();
+      });
+    }
+  </script>
+
+  <script src="assets/js/pwa.js" defer></script>
+</body>
+</html>
